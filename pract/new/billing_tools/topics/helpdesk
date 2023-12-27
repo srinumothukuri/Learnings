@@ -1,0 +1,55 @@
+{
+   "check_assignment" : {
+      "input_params" : ["ticket_id"],
+      "state_queries" : [
+           { 
+             "state_name" : "ticket_detail", 
+             "repo_name" : "billingrepo",
+             "db_name" : "billing",
+             "query" : "select * from ticket where token = %(ticket_id)s",
+             "out_params": ["topic_id"],
+             "out_params_multi": []
+           },
+           { 
+             "state_name" : "topic_detail", 
+             "repo_name" : "billingrepo",
+             "db_name" : "billing",
+             "query" : "select * from help_desk_topic where topic_id = %(topic_id)s",
+             "out_params": [],
+             "out_params_multi": []
+           },
+           { 
+             "state_name" : "topic_mapping", 
+                               "repo_name" : "billingrepo",
+                               "db_name" : "billing",
+                               "query" : "select * from help_desk_topic_mapping where subtopic_id = %(topic_id)s",
+                               "out_params": ["subtopic_id", "topic_id"],
+                               "out_params_multi": []
+                             }, 
+           { 
+             "state_name" : "main_topic", 
+                               "repo_name" : "billingrepo",
+                               "db_name" : "billing",
+                               "query" : "select * from help_desk_topic where topic_id = %(topic_id)s",
+                               "out_params": ["assign_roles"],
+                               "out_params_multi": []
+                             },
+           {
+             "state_name" : "assign_group", 
+                               "repo_name" : "billingrepo",
+                               "db_name" : "billing",
+                               "query" : "select * from helpdesk_assignment_group where group_id = %(assign_roles)s",
+                               "out_params": ["group_id"],
+                               "out_params_multi": []
+                             },
+           {
+             "state_name" : "assign_users", 
+                               "repo_name" : "billingrepo",
+                               "db_name" : "billing",
+                               "query" : "select ha.*, u.user_name from helpdesk_assignment ha join user u on ha.user_id=u.user_id where group_id = %(group_id)s",
+                               "out_params": [],
+                               "out_params_multi": []
+                             }
+      ]
+   }
+}

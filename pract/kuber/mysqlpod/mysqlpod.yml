@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-deployment
+  labels:
+    app: mysql
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: mysql
+          image: mysql:5.7
+          volumeMounts:
+            - name: efs-pvc
+              mountPath: "/opt/mysql"
+          ports:
+            - containerPort: 3306
+          args:
+            - "--general-log=1"
+            - "--general-log-file=/var/log/mysql/mysql.log"
+            - "--log_output=FILE"
+            - "--log_error_verbosity=3"
+          env:
+            - name: DB_USER
+              value: billing
+            - name: DB_PASSWORD
+              value: Baiqu3lich
+            - name: MYSQL_ROOT_PASSWORD
+              value: access
+            - name: AWS_REGION
+              valueFrom:
+                configMapKeyRef:
+                  name: aws-logging
+                  key: awslogs-region
+            - name: AWS_LOG_GROUP
+              valueFrom:
+                configMapKeyRef:
+                  name: aws-logging
+                  key: awslogs-group
+
+      volumes:
+        - name: efs-pvc
+          persistentVolumeClaim:
+            claimName: efs-claim-1
+

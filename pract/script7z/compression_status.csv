@@ -1,0 +1,10 @@
+Name,Date,Status,Size Before,Size After
+compressed_file_16:04:34,16:04:34,success,319.089,103.014
+compressed_file_16:06:14,16:06:14,success,319.089,103.014
+compressed_file_16:10:21,16:10:21,success,92.5126,32.2235
+compressed_file_16:20:51,16:20:51,success,92.5126,32.2235
+compressed_file_16:23:52,16:23:52,success,4512.06,329.02
+compressed_file_16:29:38,16:29:38,failed,0,0
+compressed_file_16:44:57,16:44:57,success,4512.06,329.02
+compressed_file_17:05:20,17:05:20,failed,0,0
+compressed_file_17:10:23,17:10:23,failed,0,0

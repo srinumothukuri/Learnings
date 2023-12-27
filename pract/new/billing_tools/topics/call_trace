@@ -1,0 +1,166 @@
+{
+
+   "last_call_usage" : {
+      "input_params" : ["served_MSISDN", "tariff_type","rec_limit","cur_date"],
+      "state_queries" : [
+           { 
+             "state_name" : "latest_calls", 
+             "repo_name" : "spalapirepo",
+             "db_name" : "spal",
+             "query" : "select * from subscription_camel_tariff_usage_log where commit_date<=%(cur_date)s and calling_party_number=%(served_MSISDN)s and tariff_rule_type=%(tariff_type)s order by commit_date desc limit %(rec_limit)s",
+             "out_params": [],
+             "out_params_multi": []
+           }
+      ]
+   },
+
+   "last_sms_usage" : {
+      "input_params" : ["served_MSISDN", "tariff_type" ,"rec_limit", "cur_date"],
+      "state_queries" : [
+           { 
+             "state_name" : "latest_sms", 
+             "repo_name" : "spalapirepo",
+             "db_name" : "spal",
+             "query" : "select * from subscription_sms_usage_log where commit_date<=%(cur_date)s and calling_party_number=%(served_MSISDN)s and tariff_rule_type=%(tariff_type)s order by commit_date desc limit %(rec_limit)s",
+             "out_params": [],
+             "out_params_multi": []
+           }
+      ]
+   },
+
+
+
+   "check_call_trace" : {
+      "input_params" : ["served_MSISDN", "called_number" ,"rec_limit"],
+      "state_queries" : [
+           { 
+             "state_name" : "latest_calls", 
+             "repo_name" : "spalapirepo",
+             "db_name" : "spal",
+             "query" : "select * from subscription_camel_tariff_usage_log where calling_party_number=%(served_MSISDN)s and called_party_number=%(called_number)s order by commit_date desc limit %(rec_limit)s",
+             "out_params": [],
+             "out_params_multi": []
+           },
+           { 
+             "state_name" : "failed_calls", 
+             "repo_name" : "spalapirepo",
+             "db_name" : "spal",
+             "query" : "select * from failed_calls where calling_number=%(served_MSISDN)s and called_number=%(called_number)s order by failure_time desc limit %(rec_limit)s",
+             "out_params": [],
+             "out_params_multi": []
+             }
+      ]
+   },
+
+
+    "check_sms_trace" : {
+      "input_params" : ["served_MSISDN", "called_number" ,"rec_limit"],
+      "state_queries" : [
+           { 
+             "state_name" : "latest_sms", 
+             "repo_name" : "spalapirepo",
+             "db_name" : "spal",
+             "query" : "select * from subscription_sms_usage_log where calling_party_number=%(served_MSISDN)s and called_party_number=%(called_number)s order by commit_date desc limit %(rec_limit)s",
+             "out_params": [],
+             "out_params_multi": []
+           },
+           { 
+             "state_name" : "failed_sms", 
+             "repo_name" : "spalapirepo",
+             "db_name" : "spal",
+             "query" : "select * from failed_sms where calling_number=%(served_MSISDN)s and called_number=%(called_number)s order by failure_time desc limit %(rec_limit)s",
+             "out_params": [],
+             "out_params_multi": []
+             }
+      ]
+   },
+
+   "offnet_international_subscriptions" : {
+         "input_params" : ["served_MSISDN", "ndc", "cur_date", "rec_limit"],
+      "state_queries" : [
+           { 
+             "state_name" : "voice_available_subs", 
+             "repo_name" : "spalapirepo",
+             "db_name" : "spal",
+             "query" : "select s.*,rp.provider_ndc,pt.unit_price from subscription s join plan_tariff_rule pt on pt.plan_token=s.tariff_id join rule_provider_map rp on  pt.tariff_rule_id=rp.tariff_rule_id and rp.provider_ndc like %(ndc)s where s.served_MSISDN=%(served_MSISDN)s and s.tariff_type in ('offnet', 'international_outgoing','onnet') and s.validity_date >= %(cur_date)s order by is_unlimited_plan desc,is_shared_subscription desc,is_fallback_plan asc limit %(rec_limit)s",
+             "out_params": [],
+             "out_params_multi": []
+           } ,
+              { 
+             "state_name" : "sms_available_subs", 
+             "repo_name" : "spalapirepo",
+             "db_name" : "spal",
+             "query" : "select s.*,rp.provider_ndc,pt.unit_price from subscription s join plan_tariff_rule pt on pt.plan_token=s.tariff_id join rule_provider_map rp on  pt.tariff_rule_id=rp.tariff_rule_id and rp.provider_ndc like %(ndc)s where s.served_MSISDN=%(served_MSISDN)s and s.tariff_type in ('sms_offnet', 'sms_international_outgoing','sms_onnet') and s.validity_date >= %(cur_date)s order by is_unlimited_plan desc,is_shared_subscription desc,is_fallback_plan asc limit %(rec_limit)s",
+             "out_params": [],
+             "out_params_multi": []
+           }
+      ]
+   },
+
+  "suitable_superonnet_subscriptions" : {
+         "input_params" : ["served_MSISDN", "cur_date", "rec_limit"],
+      "state_queries" : [
+           { 
+             "state_name" : "voice_available_subs", 
+             "repo_name" : "spalapirepo",
+             "db_name" : "spal",
+             "query" : "select s.* from subscription s where s.served_MSISDN=%(served_MSISDN)s and s.tariff_type in ( 'super_onnet')  and s.validity_date >= %(cur_date)s order by is_unlimited_plan desc,is_shared_subscription desc,is_fallback_plan asc limit %(rec_limit)s",
+             "out_params": [],
+             "out_params_multi": []
+           } ,
+              { 
+             "state_name" : "sms_available_subs", 
+             "repo_name" : "spalapirepo",
+             "db_name" : "spal",
+             "query" : "select s.* from subscription s where s.served_MSISDN=%(served_MSISDN)s and s.tariff_type in ('sms_super_onnet') and s.validity_date >= %(cur_date)s order by is_unlimited_plan desc,is_shared_subscription desc,is_fallback_plan asc limit %(rec_limit)s",
+             "out_params": [],
+             "out_params_multi": []
+           }
+      ]
+   },
+
+  "suitable_onnet_subscriptions" : {
+         "input_params" : ["served_MSISDN", "cur_date", "rec_limit"],
+      "state_queries" : [
+           {
+             "state_name" : "voice_available_subs",
+             "repo_name" : "spalapirepo",
+             "db_name" : "spal",
+             "query" : "select s.* from subscription s where s.served_MSISDN=%(served_MSISDN)s and s.tariff_type in ( 'onnet')  and s.validity_date >= %(cur_date)s order by is_unlimited_plan desc,is_shared_subscription desc,is_fallback_plan asc limit %(rec_limit)s",
+             "out_params": [],
+             "out_params_multi": []
+           } ,
+              {
+             "state_name" : "sms_available_subs",
+             "repo_name" : "spalapirepo",
+             "db_name" : "spal",
+             "query" : "select s.* from subscription s where s.served_MSISDN=%(served_MSISDN)s and s.tariff_type in ('sms_onnet') and s.validity_date >= %(cur_date)s order by is_unlimited_plan desc,is_shared_subscription desc,is_fallback_plan asc limit %(rec_limit)s",
+             "out_params": [],
+             "out_params_multi": []
+           }
+      ]
+   },
+
+    "called_number_superonnet_check" : {
+         "input_params" : ["called_number"],
+      "state_queries" : [
+           { 
+             "state_name" : "portin_check", 
+             "repo_name" : "mnprepo",
+             "db_name" : "porting",
+             "query" : "select * from port_table where served_MSISDN=%(called_number)s",
+             "out_params": [],
+             "out_params_multi": []
+           } ,
+              { 
+             "state_name" : "check_superonnet_range", 
+             "repo_name" : "mnprepo",
+             "db_name" : "porting",
+             "query" : "select * from country_msisdn_range where concat(code,start_msisdn)<=%(called_number)s and concat(code,end_msisdn)>=%(called_number)s",
+             "out_params": [],
+             "out_params_multi": []
+           }
+      ]
+   }
+
+}

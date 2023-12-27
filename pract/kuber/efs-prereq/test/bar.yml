@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bar
+  namespace: billing-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bar
+  template:
+    metadata:
+      labels:
+        app: bar
+    spec:
+      containers:
+      - name: bar
+        image: redis
+        env:
+        - name: DB_HOST
+          value: mysql-service
+        - name: DB_USER
+          value: root
+        - name: DB_PASSWORD
+          value: access
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - name: efs-pvc
+          mountPath: "/data"
+      volumes:
+      - name: efs-pvc
+        persistentVolumeClaim:
+          claimName: efs-claim

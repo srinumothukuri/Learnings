@@ -1,0 +1,25 @@
+{
+	"List_sub": {
+     "input_params" : ["ISDN"],
+     "state_queries" : [
+           {  
+             "command": "LST SUB: ISDN=\"{isdn}\", DETAIL= TRUE;"
+           }
+      ]},
+
+  "Add_sub": {
+    "input_params" : ["ISDN"],
+    "state_queries": [
+           {
+            "command": "ADD TPLSUB: HLRSN =1, ISDN=\"{isdn}\", TPLID=\"{tplid}\";"
+           }
+      ]},
+
+  "RMV_sub": {
+    "input_params" : ["ISDN"],
+    "state_queries": [
+             {
+              "command": "RMV SUB: ISDN=\"{isdn}\", RMVKI=FALSE;"
+             }
+      ]}     
+}

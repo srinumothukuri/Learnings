@@ -1,0 +1,147 @@
+{
+   "check_lot" : {
+      "input_params" : ["lot_id"],
+      "state_queries" : [
+           { 
+                               "state_name" : "warehouse_lot",
+                               "repo_name" : "billingrepo",
+                               "db_name" : "billing",
+                               "query" : "select * from warehouse_lot where lot_id = %(lot_id)s",
+                               "out_params": []
+                             },
+           { 
+                               "state_name" : "bin_lots",
+                               "repo_name" : "billingrepo",
+                               "db_name" : "billing",
+                               "query" : "select * from warehouse_bin_lot  inner join warehouse_bin on warehouse_bin_lot.bin_id=warehouse_bin.bin_id where lot_id = %(lot_id)s",
+                               "out_params": []
+                             },
+           { 
+                               "state_name" : "Stock_movement_logs",
+                               "repo_name" : "billingrepo",
+                               "db_name" : "billing",
+                               "query" : "select * from warehouse_bin_lot  inner join warehouse_bin on warehouse_bin_lot.bin_id=warehouse_bin.bin_id where lot_id = %(lot_id)s",
+                               "out_params": []
+                             }
+      ]
+   },
+   "check_bin" : {
+      "input_params" : ["bin_id"],
+      "state_queries" : [
+           { 
+                               "state_name" : "warehouse_bin",
+                               "repo_name" : "billingrepo",
+                               "db_name" : "billing",
+                               "query" : "select * from warehouse_bin  where bin_id = %(bin_id)s",
+                               "out_params": []
+                             }
+      ]
+   },
+   "check_device_inventroy" : {
+      "input_params" : ["lot_id"],
+      "state_queries" : [
+           { 
+                               "state_name" : "device_inventory",
+                               "repo_name" : "billingrepo",
+                               "db_name" : "billing",
+                               "query" : "select count(*), wb.bin_name, di.movement_date,min(di.serial_number),max(di.serial_number) from device_inventory di join warehouse_bin wb on di.device_bin_id=wb.bin_id where device_lot_id= %(lot_id)s group by di.device_bin_id",
+                               "out_params": []
+                             }
+      ]
+   },
+   "check_product_reserve_state" : {
+      "input_params" : ["request_id"],
+      "state_queries" : [
+           { 
+                               "state_name" : "device_inventory",
+                               "repo_name" : "billingrepo",
+                               "db_name" : "billing",
+                               "query" : "select count(*)  from device_inventory where reserve_ref= %(request_id)s",
+                               "out_params": []
+                             }
+      ]
+   },
+   "check_reseller_request" : {
+      "input_params" : ["request_id"],
+      "state_queries" : [
+           { 
+                               "state_name" : "reseller_request_warehouse_lot_mapper",
+                               "repo_name" : "billingrepo",
+                               "db_name" : "billing",
+                               "query" : "select * from reseller_request_warehouse_lot_mapper where request_ref= %(request_id)s",
+                               "out_params": []
+                             }
+      ]
+   },
+   "trace_reseller_request" : {
+      "input_params" : ["iccid"],
+      "state_queries" : [
+           {
+                               "state_name" : "device_inventory",
+                               "repo_name" : "billingrepo",
+                               "db_name" : "billing",
+                               "query" : "select * from device_inventory where serial_number= %(iccid)s)",
+                               "out_params": ["reserve_ref"]
+                             },
+		           {
+                               "state_name" : "reseller_request",
+                               "repo_name" : "billingrepo",
+                               "db_name" : "billing",
+                               "query" : "select * from reseller_request where request_id= %(reserve_ref)s",
+                               "out_params": []
+                             },
+
+                             {
+                               "state_name" : "request_entites",
+                               "repo_name" : "billingrepo",
+                               "db_name" : "billing",
+                               "query" : "select * from reseller_request_mapper where reseller_request_id= %(reserve_ref)s",
+                               "out_params": []
+                             }
+
+      ]
+   },
+   "reseller_physical_stock" : {
+      "input_params" : ["lot_name","reseller_name"],
+      "state_queries" : [
+           {
+                               "state_name" : "reseller_name",
+                               "repo_name" : "billingrepo",
+                               "db_name" : "billing",
+                               "query" : "select bin_id,bin_name from warehouse_bin wb inner join reseller_management r on r.reseller_id=wb.bin_ref and r.reseller_name=%(reseller_name)s",
+                               "out_params": ["bin_id"]
+            },
+		      {
+                               "state_name" : "reseller_request",
+                               "repo_name" : "billingrepo",
+                               "db_name" : "billing",
+                               "query" : "select count(*),p.product_name as AvailableStock from device_inventory d inner join warehouse_lot wl on d.device_lot_id=wl.lot_id and wl.lot_name=%(lot_name)s and device_bin_id=%(bin_id)s and is_available=1 inner join product_types p on p.product_listing_id=d.product_listing_id",
+                               "out_params": []
+            }
+      ]
+   },
+   "check_stock_assignment" : {
+      "input_params" : ["serial_start","serial_end"],
+      "state_queries" : [
+           {
+                               "state_name" : "device_inventory",
+                               "repo_name" : "billingrepo",
+                               "db_name" : "billing",
+                               "query" : "select min(serial_number), max(serial_number), count(*), wb.bin_name from device_inventory di join warehouse_bin wb on wb.bin_id=di.device_bin_id where serial_number >= %(serial_start)s and serial_number <= %(serial_end)s group by allocation_block, movement_log_id",
+                               "out_params": []
+            }
+      ]
+   },
+   "check_device" : {
+      "input_params" : ["serial_number"],
+      "state_queries" : [
+           {
+                               "state_name" : "device_inventory",
+                               "repo_name" : "billingrepo",
+                               "db_name" : "billing",
+                               "query" : "select di.serial_number,di.device_info,wb.bin_name from device_inventory di join warehouse_bin wb on wb.bin_id=di.device_bin_id where serial_number = %(serial_number)s;",
+                               "out_params": []
+            }
+      ]
+   }
+}

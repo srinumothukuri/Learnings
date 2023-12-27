@@ -1,0 +1,24 @@
+{
+    "vpn_subscription":{
+        "input_params":["msisdn"],
+        "state_queries":[
+            {
+                "state_name" : "subscription_info",
+                "repo_name" : "billingrepo",
+                "db_name" : "billing",
+                "query" : "select activation_state,user_name,IF(documents_upload_pending,'Document Upload Pending','No Document Upload Pending') as doc_status from subscription s inner join user u on u.user_id=s.user_id and served_MSISDN=%(msisdn)s",
+                "out_params": [],
+                "out_params_multi": []
+            },
+            {
+                "state_name" : "recharge_state",
+                "repo_name" : "billingrepo",
+                "db_name" : "billing",
+                "query" : "select bundle_record_token,pg.group_name,ps.creation_date,ps.expiry_date,auto_renewal_state,auto_renewal_message as auto_renewal_error_message from prepaid_subscription_records ps inner join subscription s on s.subscription_id=ps.subscription_id and s.served_MSISDN=%(msisdn)s and s.is_deleted=0 and ps.is_deleted=0 inner join plan_group pg on pg.plan_group_id=ps.plan_group_id",
+                "out_params": [],
+                "out_params_multi": []
+            }
+        ]
+    }
+
+}

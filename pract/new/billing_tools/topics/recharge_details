@@ -1,0 +1,100 @@
+{
+	"check_recharge_with_recharge_token": {
+		"input_params": ["bundle_record_token"],
+		"state_queries": [{
+				"state_name": "subscription_records",
+				"repo_name": "billingrepo",
+				"db_name": "billing",
+				"query": "select p.service_type,p.plan_group_id, p.is_deleted,p.is_active,p.is_lifetime_valid, p.subscription_id, p.payment_id,p.subscription_token,p.creation_date, ps.expiry_date, ps.activation_date,p.bundle_record_token,ps.is_installed from prepaid_subscription_records p join prepaid_subscription_record_spal ps on p.subscription_token=ps.subscription_token where p.bundle_record_token=%(bundle_record_token)s",
+				"out_params": ["subscription_id", "payment_id", "subscription_token"],
+				"out_params_multi": []
+			},
+			{
+				"state_name": "subscription_detail",
+				"repo_name": "billingrepo",
+				"db_name": "billing",
+				"query": "select * from subscription where subscription_id=%(subscription_id)s group by subscription_id",
+				"out_params": [],
+				"out_params_multi": []
+			},
+			{
+				"state_name": "voucher_detail",
+				"repo_name": "billingrepo",
+				"db_name": "billing",
+				"query": "select * from voucher where voucher_code= %(payment_id)s",
+				"out_params": [],
+				"out_params_multi": []
+			}, {
+				"state_name": "spal_installation_status",
+				"repo_name": "spalapirepo",
+				"db_name": "spal",
+				"query": "select tariff_is_active,creation_date,validity_date from subscription where subscription_id=%(subscription_token)s",
+				"out_params": ["tariff_is_active", "creation_date","validity_date"],
+				"out_params_multi": []
+			}
+		]
+	},
+
+	"check_recharge_with_payment_id": {
+		"input_params": ["payment_id"],
+		"state_queries": [
+
+			{
+				"state_name": "subscription_records",
+				"repo_name": "billingrepo",
+				"db_name": "billing",
+				"query": "select * from prepaid_subscription_records where payment_id=%(payment_id)s",
+				"out_params": ["subscription_id"],
+				"out_params_multi": []
+			},
+			{
+				"state_name": "subscription_detail",
+				"repo_name": "billingrepo",
+				"db_name": "billing",
+				"query": "select * from subscription where subscription_id=%(subscription_id)s group by subscription_id",
+				"out_params": [],
+				"out_params_multi": []
+			},
+			{
+				"state_name": "voucher_detail",
+				"repo_name": "billingrepo",
+				"db_name": "billing",
+				"query": "select * from voucher where voucher_code= %(payment_id)s",
+				"out_params": [],
+				"out_params_multi": []
+			}
+		]
+	},
+
+	"check_spal_installation": {
+		"input_params": ["bundle_record_token"],
+		"state_queries": [
+
+			{
+				"state_name": "billing_subscription_records",
+				"repo_name": "billingrepo",
+				"db_name": "billing",
+				"query": "select * from prepaid_subscription_records where bundle_record_token=%(bundle_record_token)s",
+				"out_params": [],
+				"out_params_multi": []
+			},
+			{
+				"state_name": "billing_subscription_spal",
+				"repo_name": "billingrepo",
+				"db_name": "billing",
+				"query": "select ps.* from prepaid_subscription_record_spal ps join prepaid_subscription_records p on p.subscription_token=ps.subscription_token where p.bundle_record_token=%(bundle_record_token)s",
+				"out_params": [],
+				"out_params_multi": []
+			},
+			{
+				"state_name": "spal_db_records",
+				"repo_name": "spalapirepo",
+				"db_name": "spal",
+				"query": "select * from voucher where voucher_code= %(payment_id)s",
+				"out_params": [],
+				"out_params_multi": []
+			}
+		]
+	}
+
+}

@@ -1,0 +1,14 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+ name: read-write-binding
+ namespace: stage-env
+roleRef:
+ kind: Role
+ name: read-write
+ apiGroup: rbac.authorization.k8s.io
+subjects:
+        - kind: User
+          name: stage-env-user
+          apiGroup: rbac.authorization.k8s.io
+

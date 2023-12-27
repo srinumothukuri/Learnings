@@ -1,0 +1,5 @@
+kubectl delete svc billingrepo cataloguemgmtrepo cdrmongodbrepo inventorymgmtrepo mnoplanrepo mnorepo offlinerepo prrfilesrepo roamabilityrepo servicemgmtrepo shipmentmanagementrepo sspaymentrepo taxmgmtrepo urarepo userkycrepo usermgmtrepo verizonnetworkcvgrepo verizonrepo walletmgmtrepo mno-gw-interface ejabberdrepo -n kube-system
+
+
+kubectl delete endpoints inventorymgmtrepo mnoplanrepo mnorepo offlinerepo prrfilesrepo roamabilityrepo servicemgmtrepo shipmentmanagementrepo sspaymentrepo taxmgmtrepo urarepo userkycrepo usermgmtrepo verizonnetworkcvgrepo verizonrepo walletmgmtrepo mno-gw-interface -n kube-system
+

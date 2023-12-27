@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: shipment-mgmt
+  namespace: dummy
+spec:
+  type: NodePort
+  selector:
+    app: shipment-mgmt
+  ports:
+    - port: 8099
+      protocol: TCP
+      targetPort: 8099
+      nodePort: 32109 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shipment-mgmt-pod-depolyment
+  namespace: dummy
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 1
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shipment-mgmt
+  template:
+    metadata:
+      labels:
+        app: shipment-mgmt
+    spec:
+      volumes:
+              - name: efs-pvc
+                persistentVolumeClaim:
+                        claimName: pvccc
+      containers:
+        - name: shipment-mgmt-container
+          image:  infimobile/docker:shipment_mgmt
+          imagePullPolicy: Always
+          env:
+            - name: TZ
+              value: America/New_York
+          resources:
+            limits:
+                    memory: "4048Mi"
+                    cpu: "2000m"
+          ports:
+                  - containerPort: 8099
+          volumeMounts:
+                  - name: efs-pvc
+                    mountPath: "/opt/documents_root"
+      imagePullSecrets:
+        - name: infimobile-dockerhub-secret 

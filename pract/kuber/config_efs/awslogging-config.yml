@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aws-logging
+  namespace: billing-demo
+data:
+  awslogs-region: ap-south-1
+  awslogs-group: /aws/eks/bss-cluster/cluster
+

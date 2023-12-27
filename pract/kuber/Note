@@ -1,0 +1,182 @@
+
+
+
+
+Topics to cover when learning Kubernetes as a DevOps engineer:
+
+1. Containerization:
+
+	Understanding containerization concepts using Docker or other container runtimes.
+	Creating Docker images for applications and services.
+	Running and managing containers locally using Docker CLI.
+	
+2. Kubernetes Architecture:
+
+	Understanding the control plane components (API server, scheduler, controller manager).
+	Understanding the etcd datastore.
+	Understanding the kubelet and kube-proxy components.
+	
+3. Pods:
+
+	What are pods, and why are they used in Kubernetes?
+	Defining pods using YAML manifests.
+	Working with multi-container pods.
+	Handling shared storage and networking within pods.
+	
+4. Deployments:
+
+	Understanding the purpose of Deployments in Kubernetes.
+	Defining deployments to manage replicas and updates.
+	Performing rolling updates and rollbacks with Deployments.
+	
+5. Services:
+
+	What are Services in Kubernetes, and why are they used?
+	Creating different types of Services (ClusterIP, NodePort, LoadBalancer).
+	Connecting applications and pods using Services.
+	
+6. ConfigMaps and Secrets:
+
+	Managing configuration data using ConfigMaps.
+	Managing sensitive information using Secrets.
+	Mounting ConfigMaps and Secrets as volumes in pods.
+	
+7. Namespaces:
+
+	Understanding the purpose of Namespaces in Kubernetes.
+	Creating and managing multiple Namespaces for resource isolation.
+	
+8. Storage:
+
+	Understanding Persistent Volumes (PVs) and Persistent Volume Claims (PVCs).
+	Configuring and using Persistent Volumes to provide data persistence to applications.
+	
+9. Monitoring and Logging:
+
+	Monitoring Kubernetes cluster health using tools like Prometheus.
+	Centralized logging using tools like Fluentd and Elasticsearch.
+	
+10. Resource Management:
+
+	Understanding resource requests and limits for pods.
+	Monitoring and optimizing resource utilization in a cluster.
+	
+11. Networking:
+
+	Understanding Kubernetes networking concepts, including Services, Ingress, and network policies.
+	Configuring and securing network communication between pods and services.
+	
+12. Security:
+
+	Implementing Role-Based Access Control (RBAC) to manage cluster access.
+	Enforcing Pod Security Policies for security hardening.
+	
+13. Continuous Integration and Deployment (CI/CD):
+
+	Integrating Kubernetes with CI/CD pipelines for automated application deployment.
+	Implementing rolling updates and blue-green deployments.
+	
+14. Scaling and Autoscaling:
+
+	Manually scaling applications by adjusting replica counts.
+	Implementing Horizontal Pod Autoscalers (HPAs) for automatic scaling.
+	
+15. Infrastructure as Code (IaC):
+
+	Using Helm charts or Kubernetes YAML manifests for defining and managing Kubernetes resources.
+	GitOps practices for managing infrastructure and application configurations.
+	
+16. Cluster Setup and Management:
+
+	Setting up Kubernetes clusters on different cloud providers (AWS, GCP, Azure) or on-premises.
+	Managing cluster upgrades, backups, and disaster recovery.
+	
+	
+	***** https://kubernetes.io/docs/reference/kubectl/cheatsheet/ ***** -------> Cheat sheet	
+	
+======================================================================================================================================================================================================	
+
+DEPLOYING FIRST APP :
+	
+* Pod is nothing but a wrapper of a container	
+	
+* Create a pod.yml file ( same as docker to create a conatiner but instead of writing in command line we write everything like port,image name,options in yaml file)
+									
+	Example of pod.yml file					apiVersion: v1
+									kind: Pod
+									metadata:
+									  name: nginx
+									spec:
+									  containers:
+									  - name: nginx
+									    image: nginx:latest
+									    ports:
+									    - containerPort: 80
+
+												Equivalent to --> docker run -d nginx:latest --name nginx -p 80:80
+									
+									
+									
+kubectl create(or apply) -f pod.yml/deploy.yml/service.yml  ------> creates a pod/deployment/service
+
+minikube start ----------->starts a minikube cluster and creates a single node architecture pod	
+	
+kubectl get nodes --------->Displays nodes
+
+kubectl get pods ---------->Display pods
+
+kubectl get pods -w ---------->Display pods in watch mode (continuous observation on the status of the pod)
+
+kubectl get all -A ---------->Displays evertyting like pods,deploys,replica sets...
+
+
+WORKING OF DEPLOYMENT :
+	
+-> In k8s, there is a concept called controllers (we saw this in architecture video). The main work of controller is to watching the POD is running in desired state or not. 
+-> If not it sends the message to scheduler to create a new resource to achieve the desired state. 
+-> One of the controller is called "Deployment".
+->  "Deployment" first creates "replica set(actual controller)" managed by "deployment" and replica set creates and manages the POD. 
+->  Still confusing see the bellow picture: 
+
+        +-----------------------------+
+        |      Deployment  	 	|
+        | (desired state: 3)  	|
+        +-----------------------------+
+                     |
+                     | creates or updates
+                     |
+        +------------------------------+
+        |      ReplicaSet 		|
+        | (desired state: 3)		| 
+        +------------------------------+
+                     |
+                     | creates or updates
+                     |
+        +----------------------+
+        |         Pod          |  (POD -> execution environment for the containers) 
+        +----------------------+
+                     |
+                     | runs the containers-
+                     |
+        +----------------------+
+        |       Container  	|
+        +----------------------+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

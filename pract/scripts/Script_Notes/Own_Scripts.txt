@@ -1,0 +1,208 @@
+
+
+
+
+for i in {1..10}; do			
+    echo -ne "$i\033[0K\r"			-------> prints 1 to 10 by overwriting the previous value
+    sleep 1
+done
+
+
+
+
+
+====================================================================================================================================================================================================
+                                                                          # TO CREATE A SQL TABLE FROM CSV FILE
+====================================================================================================================================================================================================
+
+#!/bin/bash
+
+user="srinivas"
+password="Bulzer220"
+host="localhost"
+csvfile="/home/aryagami/pract/data.csv"
+tablename="people"
+dbase="srinivas"
+
+csv_header=$(head -n 1 "$csvfile")
+
+columns=$(echo "$csv_header"|awk 'BEGIN {FS=OFS=","} NR==1 {
+suffix[1]=" INT(10)"
+suffix[2]=" VARCHAR(255)"
+suffix[3]=" VARCHAR(255)"
+suffix[4]=" INT(100)"
+
+for (i=1; i<=NF; i++) $i = $i suffix[i]}
+ 1')
+
+sqlcreate="CREATE TABLE $tablename ($columns);"
+
+loaddata="LOAD DATA LOCAL INFILE '$csvfile' INTO TABLE $tablename FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' IGNORE 1 LINES;"
+
+sudo mysql -u"$user" -p"$password" -h "$host" -D "$dbase" -e "$sqlcreate"
+
+
+sudo mysql -u"$user" -p"$password" -h "$host" -D "$dbase" -e "$loaddata"
+echo "Data loaded to SQL Table successfully"
+
+====================================================================================================================================================================================================
+                                                                         # TO CREATE CSV FILE FROM SQL TABLE AND READ EACH LINE AFTER 5 SECONDS
+====================================================================================================================================================================================================
+
+#!/bin/bash
+
+mysql_user="srinivas"
+mysql_password="Bulzer220"
+mysql_host="localhost"
+mysql_dbase="srinivas"
+table_name="people"
+csv_file="/home/aryagami/pract/output_data.csv"
+
+sql_query="SELECT * FROM $table_name;"
+
+mysql -u"$mysql_user" -p"$mysql_password" -h"$mysql_host" -D"$mysql_dbase" -e"$sql_query"|sed 's/\t/,/g'>"$csv_file"
+
+
+# Read and print each line from the CSV file
+
+IFS=','
+
+while read -r line; do
+  echo "$line"
+done < "$csv_file"
+
+=====================================================================================================================================================================================================
+									     # TO CREATE A FILE WITH DATESTAMP AND SEND TO DATABASE(creates a table)
+=====================================================================================================================================================================================================
+
+#!/bin/bash
+
+read -p"Enter file name:" file
+
+touch $file
+filename=$file
+datetime=$(date +%Y-%m-%d_%H-%M-%S)
+new_file=$filename"_"$datetime.txt
+cp $filename $new_file
+rm $filename
+
+echo "CREATE TABLE employee(sno INT(10),Name VARCHAR(255),Age INT(10));">>$new_file
+
+sudo mysql -u"srinivas" -p"Bulzer220" -D"srinivas" </home/aryagami/pract/$new_file
+
+=======================================================================================================================================================================================================
+									    # TO DUMP A DATABASE FROM SQL TO A FILE
+=======================================================================================================================================================================================================
+#!/bin/bash
+
+read -p"Enter file name:" file
+
+touch $file
+filename=$file
+datetime=$(date +%Y-%m-%d_%H-%M-%S)
+new_file=$filename"_"$datetime.txt
+cp $filename $new_file
+rm $filename
+
+sudo mysqldump -u"srinivas" -p"Bulzer220" srinivas > /home/aryagami/pract/$new_file                ## Here 'srinivas' used after password is a database which contains sql tables
+
+=======================================================================================================================================================================================================
+		# Write shell script to create one table with different columns like sno,name,current_date-time now for every 1 sec insert values into table after every 3 sec import table data into 											csv file and print the data inside csv file 
+=======================================================================================================================================================================================================
+
+#!/bin/bash
+read -p"enter csv file name: " file
+csv_file="/home/aryagami/pract/$file$(date +'%F %T').csv"
+sudo mysql -usrinivas -pBulzer220 -Dsrinivas <<EOF
+CREATE TABLE mytable (
+  sno INTEGER,
+  name TEXT,
+  current_date_time TEXT
+);
+EOF
+
+insertvalues() {
+  current_date_time=$(date +"%Y-%m-%d %H:%M:%S")
+  sudo mysql -usrinivas -pBulzer220 -Dsrinivas -e  "INSERT INTO mytable (sno, name, current_date_time) VALUES ($1, 'Name$1', '$current_date_time');"
+}
+
+exporttocsv() {
+  sudo mysql -usrinivas -pBulzer220 -Dsrinivas -e "SELECT * FROM mytable;" | sed 's/\t/,/g'>"$csv_file"
+  echo "CSV file created: $csv_file"
+  cat "$csv_file"
+}
+for ((i=1; i<=10; i++)); do
+  insertvalues $i
+  sleep 1
+
+  if ((i % 3 == 0)); then
+    exporttocsv
+    sleep 3
+  fi
+done
+exporttocsv
+
+=======================================================================================================================================================================================================
+			# Write shell script to insert data into table up to certain time and print the data which is inserted at certain timeperiod
+=======================================================================================================================================================================================================
+
+#!/bin/bash
+
+read -p"Enter file name: " file
+csv_file="/home/aryagami/pract/$file$(date +'%F %T').csv"
+
+start="2023-07-31_17:22:40"
+end="2023-07-31_17:23:00"
+
+create_table(){
+
+        mysql -usrinivas -pBulzer220 -hlocalhost -Dsrinivas <<EOF
+        create table if not exists datafetch(
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        data VARCHAR(255),
+        timestamp DATETIME
+);
+EOF
+}
+
+insert_data(){
+
+        time_stamp=$(date +"%F_%T")
+        value=$1
+        mysql -usrinivas -pBulzer220 -hlocalhost -Dsrinivas -e "insert into datafetch (data,timestamp) values ('data $value','$time_stamp');"
+}
+
+
+print_data(){
+
+        mysql -usrinivas -pBulzer220 -hlocalhost -Dsrinivas -e "select * from datafetch where timestamp between '$start' and '$end';"|sed 's/\t/,/g'>'$csv_file'
+        cat '$csv_file'
+
+}
+
+create_table
+n=1
+while [[ "$(date +'%F_%T')" < $end ]]; do
+
+        insert_data $n
+        sleep 2
+        n=$((n+1))
+done
+
+print_data
+
+=======================================================================================================================================================================================================
+		
+=======================================================================================================================================================================================================
+
+
+
+
+
+
+
+
+
+
+
+

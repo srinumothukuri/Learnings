@@ -1,0 +1,24 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="note">
+                    <div class="row " ng-repeat="row in tableData track by $index">
+
+                        <div class="col-md-12">
+                        <div class="user-details-head-css">
+                            <div class="user-details-name">
+                              {{row.header}}
+                            </div>
+                            <div class="user-details-model">
+                               {{row.RowVet || "N/A"}}
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

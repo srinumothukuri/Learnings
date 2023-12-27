@@ -1,0 +1,12 @@
+{
+   host_info: [
+     {
+             "name" : "Controller01",
+             "address" : "controller1",
+             "db_name" : "billing",
+             "query" : "select * from ticket where token = %(ticket_id)s",
+             "out_params": ["topic_id"],
+             "out_params_multi": []
+     }
+   ]
+}

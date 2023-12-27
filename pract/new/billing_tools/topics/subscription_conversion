@@ -1,0 +1,165 @@
+{
+  "prepaid_to_postpaid": {
+    "input_params" : ["ISDN"],
+    "state_queries": [
+       {
+          "command": "RMV SUB: ISDN=\"{isdn}\", RMVKI=FALSE;"
+       },
+
+       {
+          "command": "ADD TPLSUB: HLRSN =1, ISDN=\"{isdn}\", TPLID={tplid}, IMSI=\"{imsi}\";",
+          "query1" : "select postpaid_template_id from mml_config_table;",
+          "query2" : "select served_IMSI from subscription where served_MSISDN=%(ISDN)s order by created_date desc limit 1;"
+          
+       }
+
+      ]},
+
+  "postpaid_to_prepaid": {
+    "input_params" : ["ISDN"],
+    "state_queries": [
+       {
+          "command": "RMV SUB: ISDN=\"{isdn}\", RMVKI=FALSE;"
+       },
+
+       {
+          "command": "ADD TPLSUB: HLRSN =1, ISDN=\"{isdn}\", TPLID={tplid}, IMSI=\"{imsi}\";",
+          "query1" : "select prepaid_template_id from mml_config_table;",
+          "query2" : "select served_IMSI from subscription where served_MSISDN=%(ISDN)s order by created_date desc limit 1;"
+
+       }
+
+      ]},
+
+  "List_sub": {
+     "input_params" : ["ISDN"],
+     "state_queries" : [
+           {  
+             "command": "LST SUB: ISDN=\"{isdn}\", DETAIL= TRUE;"
+           }
+      ]},
+
+
+  "Add_sub_prepaid": {
+    "input_params" : ["ISDN"],
+    "state_queries": [
+           {
+             "command": "ADD TPLSUB: HLRSN =1, ISDN=\"{isdn}\", TPLID={tplid}, IMSI=\"{imsi}\";",
+             "query1" : "select prepaid_template_id from mml_config_table;",
+             "query2" : "select served_IMSI from subscription where served_MSISDN=%(ISDN)s order by created_date desc limit 1;"
+           }
+      ]},
+
+  "Add_sub_postpaid": {
+    "input_params" : ["ISDN"],
+    "state_queries": [
+           {
+             "command": "ADD TPLSUB: HLRSN =1, ISDN=\"{isdn}\", TPLID={tplid}, IMSI=\"{imsi}\";",
+             "query1" : "select postpaid_template_id from mml_config_table;",
+             "query2" : "select served_IMSI from subscription where served_MSISDN=%(ISDN)s order by created_date desc limit 1;"
+           }
+      ]},
+
+
+  "RMV_sub": {
+    "input_params" : ["ISDN"],
+    "state_queries": [
+             {
+              "command": "RMV SUB: ISDN=\"{isdn}\", RMVKI=FALSE;"
+             }
+      ]},
+      
+  "Data_bar": {
+     "input_params" : ["ISDN"],
+     "state_queries" : [
+           {  
+             "command": "MOD ODBPOS: ISDN=\"{isdn}\", ODBPOS=BAPOS;"
+           }
+      ]},  
+  "Data_unbar": {
+     "input_params" : ["ISDN"],
+     "state_queries" : [
+           {  
+             "command": "MOD ODBPOS: ISDN=\"{isdn}\", ODBPOS=NOBPOS;"
+           }
+      ]},
+  "Roaming_bar": {
+     "input_params" : ["ISDN"],
+     "state_queries" : [
+           {  
+             "command": "MOD ODBROAM: ISDN=\"{isdn}\", ODBROAM=BROHPLMN;"
+           }
+      ]},
+  
+  "Roaming_unbar": {
+     "input_params" : ["ISDN"],
+     "state_queries" : [
+           {  
+             "command": "MOD ODBROAM: ISDN=\"{isdn}\", ODBROAM=NOBAR;"
+           }
+      ]},
+
+  "Incoming_bar": {
+     "input_params" : ["ISDN"],
+     "state_queries" : [
+           {  
+             "command": "MOD ODBIC: ISDN=\"{isdn}\",ODBIC=BAIC;"
+           }
+      ]},  
+  "Incoming_unbar": {
+     "input_params" : ["ISDN"],
+     "state_queries" : [
+           {  
+             "command": "MOD ODBIC: ISDN=\"{isdn}\",ODBIC=NOBIC;"
+           }
+          ]},
+
+  "Outgoing_bar": {
+     "input_params" : ["ISDN"],
+     "state_queries" : [
+           {  
+             "command": "MOD ODBOC: ISDN=\"{isdn}\",ODBOC=BAOC;"
+           }
+      ]},  
+  "Outgoing_unbar": {
+     "input_params" : ["ISDN"],
+     "state_queries" : [
+           {  
+             "command": "MOD ODBOC: ISDN=\"{isdn}\",ODBOC=NOBOC;"
+           }
+      ]},
+    
+  "All_bar": {
+     "input_params" : ["ISDN"],
+     "state_queries" : [
+      {  
+        "command": "MOD ODBPOS: ISDN=\"{isdn}\", ODBPOS=BAPOS;"
+      },
+      {  
+        "command": "MOD ODBROAM: ISDN=\"{isdn}\", ODBROAM=BROHPLMN;"
+      },
+      {  
+        "command": "MOD ODBIC: ISDN=\"{isdn}\",ODBIC=BAIC;"
+      },
+      {  
+        "command": "MOD ODBOC: ISDN=\"{isdn}\",ODBOC=BAOC;"
+      }      
+      ]},
+  "All_unbar": {
+     "input_params" : ["ISDN"],
+     "state_queries" : [
+      {  
+        "command": "MOD ODBPOS: ISDN=\"{isdn}\", ODBPOS=NOBPOS;"
+      },
+      {  
+        "command": "MOD ODBROAM: ISDN=\"{isdn}\", ODBROAM=NOBAR;"
+      },
+      {  
+        "command": "MOD ODBIC: ISDN=\"{isdn}\",ODBIC=NOBIC;"
+      },
+      {  
+        "command": "MOD ODBOC: ISDN=\"{isdn}\",ODBOC=NOBOC;"
+      }            
+      ]}
+
+}      

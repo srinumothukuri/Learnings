@@ -1,0 +1,31 @@
+{
+   "check_recharge_cancellation" : {
+      "input_params" : ["served_MSISDN"],
+      "state_queries" : [
+           { 
+             "state_name" : "subscription_detail", 
+             "repo_name" : "billingrepo",
+             "db_name" : "billing",
+             "query" : "select * from subscription where served_MSISDN = %(served_MSISDN)s and is_active=1",
+             "out_params": ["subscription_id"],
+             "out_params_multi": []
+           },
+           {
+             "state_name" : "deleted_subscription_records",
+             "repo_name" : "billingrepo",
+             "db_name" : "billing",
+             "query" : "select * from prepaid_subscription_records where subscription_id=%(subscription_id)s order by recharge_transferred_on desc",
+             "out_params": ["payment_id"],
+             "out_params_multi": []
+           },
+           {
+             "state_name" : "voucher_detail",
+             "repo_name" : "billingrepo",
+             "db_name" : "billing",
+             "query" : "select * from voucher where voucher_code= %(payment_id)s",
+             "out_params": [],
+             "out_params_multi": []
+           }
+      ]
+   }
+}

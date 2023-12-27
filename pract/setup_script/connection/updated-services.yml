@@ -1,0 +1,211 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: billingrepo
+spec:
+  type: ExternalName
+  externalName: REPLACE_WITH_ENDPOINT
+  ports:
+  - port: 3306
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: userkycrepo
+spec:
+  type: ExternalName
+  externalName: REPLACE_WITH_ENDPOINT
+  ports:
+  - port: 3306
+---  
+apiVersion: v1
+kind: Service
+metadata:
+  name: usermgmtrepo
+spec:
+  type: ExternalName
+  externalName: REPLACE_WITH_ENDPOINT
+  ports:
+  - port: 3306
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cataloguemgmtrepo
+spec:
+  type: ExternalName
+  externalName: REPLACE_WITH_ENDPOINT
+  ports:
+  - port: 3306
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: inventorymgmtrepo
+spec:
+  type: ExternalName
+  externalName: REPLACE_WITH_ENDPOINT
+  ports:
+  - port: 3306
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: walletmgmtrepo
+spec:
+  type: ExternalName
+  externalName: REPLACE_WITH_ENDPOINT
+  ports:
+  - port: 3306
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: servicemgmtrepo
+spec:
+  type: ExternalName
+  externalName: REPLACE_WITH_ENDPOINT
+  ports:
+  - port: 3306
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sspaymentrepo
+spec:
+  type: ExternalName
+  externalName: REPLACE_WITH_ENDPOINT
+  ports:
+  - port: 3306
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mnoplanrepo
+spec:
+  type: ExternalName
+  externalName: REPLACE_WITH_ENDPOINT
+  ports:
+  - port: 3306
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: shipmentmanagementrepo
+spec:
+  type: ExternalName
+  externalName: REPLACE_WITH_ENDPOINT
+  ports:
+  - port: 3306
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ejabberdrepo
+spec:
+  type: ExternalName
+  externalName: REPLACE_WITH_ENDPOINT
+  ports:
+  - port: 3306
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: verizonnetworkcvgrepo
+spec:
+  type: ExternalName
+  externalName: REPLACE_WITH_ENDPOINT
+  ports:
+  - port: 3306
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: verizonrepo
+spec:
+  type: ExternalName
+  externalName: REPLACE_WITH_ENDPOINT
+  ports:
+  - port: 3306
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: urarepo
+spec:
+  type: ExternalName
+  externalName: REPLACE_WITH_ENDPOINT
+  ports:
+  - port: 3306
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: offlinerepo
+spec:
+  type: ExternalName
+  externalName: REPLACE_WITH_ENDPOINT
+  ports:
+  - port: 3306
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mnorepo
+spec:
+  type: ExternalName
+  externalName: REPLACE_WITH_ENDPOINT
+  ports:
+  - port: 3306
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mno-gw-interface
+spec:
+  type: ExternalName
+  externalName: REPLACE_WITH_ENDPOINT
+  ports:
+  - port: 3306
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: taxmgmtrepo
+spec:
+  type: ExternalName
+  externalName: REPLACE_WITH_ENDPOINT
+  ports:
+  - port: 3306
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prrfilesrepo
+spec:
+  type: ExternalName
+  externalName: REPLACE_WITH_ENDPOINT
+  ports:
+  - port: 3306
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: roamabilityrepo
+spec:
+  type: ExternalName
+  externalName: REPLACE_WITH_ENDPOINT
+  ports:
+  - port: 3306
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cdrmongodbrepo
+spec:
+  type: ExternalName
+  externalName: REPLACE_WITH_ENDPOINT
+  ports:
+  - port: 3306
+

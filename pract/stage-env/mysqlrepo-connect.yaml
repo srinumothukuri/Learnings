@@ -1,0 +1,520 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: billingrepo
+  namespace: stage-env
+spec:
+  ports:
+  - port: 3306
+    name: mysqlbillingrepo
+    targetPort: 3306
+
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: billingrepo
+  namespace: stage-env
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+        name: mysqlbillingrepo 
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: userkycrepo
+  namespace: stage-env
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: userkycrepo
+  namespace: stage-env
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: usermgmtrepo
+  namespace: stage-env
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: usermgmtrepo
+  namespace: stage-env
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: cataloguemgmtrepo
+  namespace: stage-env
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: cataloguemgmtrepo
+  namespace: stage-env
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: inventorymgmtrepo
+  namespace: stage-env
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: inventorymgmtrepo
+  namespace: stage-env
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: walletmgmtrepo
+  namespace: stage-env
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: walletmgmtrepo
+  namespace: stage-env
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: servicemgmtrepo
+  namespace: stage-env
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: servicemgmtrepo
+  namespace: stage-env
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: sspaymentrepo
+  namespace: stage-env
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: sspaymentrepo
+  namespace: stage-env
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: mnoplanrepo
+  namespace: stage-env
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: mnoplanrepo
+  namespace: stage-env
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: shipmentmanagementrepo
+  namespace: stage-env
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: shipmentmanagementrepo
+  namespace: stage-env
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: ejabberdrepo
+  namespace: stage-env
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: ejabberdrepo
+  namespace: stage-env
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: taxmgmtrepo
+  namespace: stage-env
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: taxmgmtrepo
+  namespace: stage-env
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: verizonnetworkcvgrepo
+  namespace: stage-env
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: verizonnetworkcvgrepo
+  namespace: stage-env
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+
+
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: verizonrepo
+  namespace: stage-env
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: verizonrepo
+  namespace: stage-env
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: urarepo
+  namespace: stage-env
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: urarepo
+  namespace: stage-env
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+---    
+kind: Service
+apiVersion: v1
+metadata:
+  name: offlinerepo
+  namespace: stage-env
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: offlinerepo
+  namespace: stage-env
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: mnorepo
+  namespace: stage-env
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: mnorepo
+  namespace: stage-env
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: mno-gw-interface
+  namespace: stage-env
+spec:
+  ports:
+  - port: 8802
+    targetPort: 8802
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: mno-gw-interface
+  namespace: stage-env
+subsets:
+  - addresses:
+      - ip: "172.31.23.142"
+    ports:
+      - port: 8082
+
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: taxmgmtrepo
+  namespace: stage-env
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: taxmgmtrepo
+  namespace: stage-env
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: prrfilesrepo
+  namespace: stage-env
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: prrfilesrepo
+  namespace: stage-env
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: roamabilityrepo
+  namespace: stage-env
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: roamabilityrepo
+  namespace: stage-env
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: cdrmongodbrepo
+  namespace: stage-env
+spec:
+  ports:
+  - port: 27017
+    targetPort: 27017
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: cdrmongodbrepo
+  namespace: stage-env
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 27017
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: intlcdrrepo
+  namespace: stage-env
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: intlcdrrepo
+  namespace: stage-env
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: netiprepo
+  namespace: stage-env
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: netiprepo
+  namespace: stage-env
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+

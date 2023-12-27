@@ -1,0 +1,18 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+ name: read-write
+ namespace: stage-env
+rules:
+        - apiGroups: ["", "extensions", "apps"]
+          resources: ["deployments", "replicasets", "pods", "services","pods/log"]
+          verbs:
+                  - get
+                  - list
+                  - watch
+                  - create
+                  - update
+                  - patch
+                  - delete
+                  - apply
+

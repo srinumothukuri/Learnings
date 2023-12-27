@@ -1,0 +1,47 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mqttbroker
+  namespace: billing-demo
+spec:
+  selector:
+    app: mqttbroker
+  ports:
+  - port: 1883
+    targetPort: 1883
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mosquitto
+  namespace: billing-demo
+spec:
+  selector:
+    matchLabels:
+      app: mqttbroker
+  template:
+    metadata:
+      labels:
+        app: mqttbroker
+    spec:
+      containers:
+      - name: mosquitto
+        image: eclipse-mosquitto:2.0
+        resources:
+          requests:
+            cpu: "50m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 1883
+        volumeMounts:
+            - name: efs-pvc
+              mountPath: "/opt/mosquitto/"
+#              subPath: mosquitto.conf
+      volumes:
+        - name: efs-pvc
+          persistentVolumeClaim:
+                        claimName: efs-claim-1

@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: foo
+  namespace: dummy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: foo
+  template:
+    metadata:
+      labels:
+        app: foo
+    spec:
+      containers:
+      - name: foo
+        image: redis
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: anyname
+          mountPath: "/data"
+      volumes:
+      - name: anyname
+        persistentVolumeClaim:
+          claimName: pvccc
+

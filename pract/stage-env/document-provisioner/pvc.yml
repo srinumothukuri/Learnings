@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: stage-document-pvc
+  namespace: stage-env
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: nfs-stage-document 
+  resources:
+    requests:
+      storage: 45Gi
+

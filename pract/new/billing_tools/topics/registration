@@ -1,0 +1,123 @@
+{
+   "check_registration" : {
+      "input_params" : ["served_MSISDN"],
+      "state_queries" : [
+           { 
+             "state_name" : "subscription_detail", 
+             "repo_name" : "billingrepo",
+             "db_name" : "billing",
+             "query" : "select * from subscription where served_MSISDN = %(served_MSISDN)s and is_active=1",
+             "out_params": ["user_id","account_id","plan_group_id","subscription_id","order_id"],
+             "out_params_multi": []
+           },{
+             "state_name" : "subscription_records",
+             "repo_name" : "billingrepo",
+             "db_name" : "billing",
+             "query" : "select * from prepaid_subscription_records where subscription_id=%(subscription_id)s and plan_group_id= %(plan_group_id)s",
+             "out_params": [],
+             "out_params_multi": []
+           },{
+             "state_name" : "subscription_account_detail",
+                               "repo_name" : "billingrepo",
+                               "db_name" : "billing",
+                               "query" : "select * from account_table where account_id= %(account_id)s",
+                               "out_params": [],
+                               "out_params_multi": []
+           },{
+             "state_name" : "subscription_account_balance_detail",
+                               "repo_name" : "billingrepo",
+                               "db_name" : "billing",
+                               "query" : "select * from account_balance where account_id= %(account_id)s",
+                               "out_params": [],
+                               "out_params_multi": []
+           },{ 
+             "state_name" : "user_detail", 
+             "repo_name" : "billingrepo",
+             "db_name" : "billing",
+             "query" : "select * from user where user_id = %(user_id)s",
+             "out_params": [],
+             "out_params_multi": []
+           },{ 
+             "state_name" : "user_docs", 
+                               "repo_name" : "billingrepo",
+                               "db_name" : "billing",
+                               "query" : "select * from user_doc where user_id= %(user_id)s",
+                               "out_params": [],
+                               "out_params_multi": []
+           },{
+             "state_name" : "user_addresses",
+                               "repo_name" : "billingrepo",
+                               "db_name" : "billing",
+                               "query" : "select * from user_address where user_id= %(user_id)s",
+                               "out_params": [],
+                               "out_params_multi": []
+           },{
+             "state_name" : "order_detail", 
+                               "repo_name" : "billingrepo",
+                               "db_name" : "billing",
+                               "query" : "select * from order_table where order_id = %(order_id)s",
+                               "out_params": [],
+                               "out_params_multi": []
+           },{
+             "state_name" : "sim_info",
+                               "repo_name" : "billingrepo",
+                               "db_name" : "billing",
+                               "query" : "select * from sim_info where served_MSISDN = %(served_MSISDN)s",
+                               "out_params": ["served_IMSI"],
+                               "out_params_multi": []
+           },{
+             "state_name" : "sim_detail",
+                               "repo_name" : "billingrepo",
+                               "db_name" : "billing",
+                               "query" : "select * from sim_detail where imsi = %(served_IMSI)s",
+                               "out_params": ["iccid"],
+                               "out_params_multi": []
+           },{
+             "state_name" : "device_inventory",
+                               "repo_name" : "billingrepo",
+                               "db_name" : "billing",
+                               "query" : "select * from device_inventory where serial_number = %(iccid)s",
+                               "out_params": [],
+                               "out_params_multi": []
+           },{
+             "state_name" : "sim_HSS_state", 
+                               "repo_name" : "billingrepo",
+                               "db_name" : "billing",
+                               "query" : "select * from sim_hss_state where served_MSISDN = %(served_MSISDN)s",
+                               "out_params": [],
+                               "out_params_multi": []
+           },{
+             "state_name" : "mobile_money_registration", 
+                               "repo_name" : "billingrepo",
+                               "db_name" : "billing",
+                               "query" : "select on_boarding_txn_id as MobileMoneyOnBoardingTxnId,on_boarding_status as OnBordingStatus,tenant_id as TenantId,IF(role_name='Consumer','OnBoarded as User','OnBoarded as Agent') as OnBoardingInfo from mobile_money_subscription mm inner join subscription s on mm.subscription_id=s.subscription_id and s.served_MSISDN =%(msisdn)s and s.is_deleted=0 inner join user u on s.user_id=u.user_id;",
+                               "out_params": [],
+                               "out_params_multi": []
+           }
+      ]},
+   "nira_verification":   {
+     "input_params" : ["user_name"],
+     "state_queries" : [
+           { 
+             "state_name" : "verification_status", 
+             "repo_name" : "billingrepo",
+             "db_name" : "billing",
+             "query" : "select verification_id,verification_type,verification_input as user_data,IF(verification_result='Ok','Verified','Verification Failed') as VerificationStatus from nira_verification_status n inner join user u on u.identity_number=n.verification_id and u.user_name=%(user_name)s",
+             "out_params": [],
+             "out_params_multi": [],
+             "server_name" : ["ui-controller","ui-controller-1"]
+           }
+      ]},
+   "refugee_validation" : {
+      "input_params" : ["user_name"],
+      "state_queries" : [
+           { 
+             "state_name" : "refugee_validation_detail", 
+             "repo_name" : "billingrepo",
+             "db_name" : "billing",
+             "query" : "select u.user_name as CustomerName,r.refugee_id as RefugeeId,last_checked_on as LastCheckedOn,last_validation_passed_on as LastValidationPassedOn,IF(validation_passed,'Valid','InValid') as ValidationStatus,latest_request as Request from user u inner join refugee_validation_check r on u.refugee_Identity_number=r.refugee_id and u.user_name=%(user_name)s",
+             "out_params": [],
+             "out_params_multi": []
+           }
+      ]}
+}

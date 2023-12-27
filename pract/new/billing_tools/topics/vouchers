@@ -1,0 +1,57 @@
+{
+  "check_reseller_voucher_request_state" : {
+      "input_params" : ["request_id"],
+      "state_queries" : [
+           { 
+                               "state_name" : "reseller_request",
+                               "repo_name" : "billingrepo",
+                               "db_name" : "billing",
+                               "query" : "select * from reseller_request where request_id= %(request_id)s",
+                               "out_params": []
+                             },
+            {
+                              "state_name" : "voucher_batch",
+                               "repo_name" : "billingrepo",
+                               "db_name" : "billing",
+                               "query" : "select * from voucher_batch where request_id= %(request_id)s",
+                               "out_params": []
+            }                 
+      ]
+   },
+  "check_voucher_batch_state" : {
+      "input_params" : ["voucher_bach_id"],
+      "state_queries" : [
+           { 
+                               "state_name" : "reseller_request",
+                               "repo_name" : "billingrepo",
+                               "db_name" : "billing",
+                               "query" : "select * from assign_vouchers av join voucher v on av.assign_voucher_id=v.voucher_assign_id where voucher_batch_id = %(voucher_bach_id)s",
+                               "out_params": []
+            }               
+      ]
+   },
+   "check_voucher_status_using_voucher_code" : {
+      "input_params" : ["voucher_code"],
+      "state_queries" : [
+           { 
+                               "state_name" : "reseller_request",
+                               "repo_name" : "billingrepo",
+                               "db_name" : "billing",
+                               "query" : "select * from voucher where voucher_code = %(voucher_code)s",
+                               "out_params": []
+            }               
+      ]
+   },
+   "check_voucher_status_using_bundle_token" : {
+      "input_params" : ["bundle_token"],
+      "state_queries" : [
+           { 
+                               "state_name" : "reseller_request",
+                               "repo_name" : "billingrepo",
+                               "db_name" : "billing",
+                               "query" : "select * from voucher where bundle_token = %(bundle_token)s",
+                               "out_params": []
+            }               
+      ]
+   }   
+}

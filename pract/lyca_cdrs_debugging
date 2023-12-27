@@ -1,0 +1,54 @@
+
+
+
+
+
+                                                                TROUBLESHOOTING / DEBUGGING ZERO FILE SIZE ISSUES 
+                                                                
+FOR RAW SMS, RAW VOICE and RAW_SMSC :
+
+1) Check the zero size file time and date stamp.
+2) Check if that file exists in "/home/cdr/cdr_download/" and is empty or not.
+
+3) Then check whether data exists in mysql database :
+			For raw_voice ("mysql -hofflinerepo -ubilling -paccess"):
+			
+				a) set session transaction isolation level read uncommitted;
+				b) select id,additionalChgInfo,min(answerTime) as answerTime,sum(callDuration) as callDuration,calledIMSI,calledNumber,callingNumber,changeOfLocation,chargeAreaCode,filename,globalAreaID,location,mSCAddress,mscIncRouteChoiceId,mscIncomingROUTE,mscOutRouteChoiceId,mscOutgoingROUTE,networkCallReference,recordType,recordsIndex,max(releaseTime) as releaseTime,roamingNumber,min(seizureTime) as seizureTime,servedIMSI,servedMSISDN,max(lastSeen) as lastSeen,calledIMEI,servedIMEI,ringingDuration,min(alertingTime) as  alertingTime,basicService,diagnostics,firstmccmnc,lastmccmnc,mscIncomingCircuit,mscIncomingRouteAttribute,orgMSCId,recordingEntity,min(setupTime) as  setupTime,translatedNumber,chargingId,price,cdrCheckTime,isVerified,serviceKey from ofcs3G.billing_records  where releaseTime >= '$sep' - interval 1 hour and releaseTime < '$sep' and recordType=0 group by networkCallReference limit 5;
+
+                       For raw_sms("mysql -hofflinerepo -ubilling -paccess"):
+                       
+                               a) set session transaction isolation level read uncommitted;
+                               b) select * from ofcs3G.SMS_billing_records where last_seen > '$sep' - interval 1 hour  and last_seen <='$sep' limit 5;
+
+                       For raw_smsc ("mysql -hofflinerepo -ubilling -paccess smsc") :
+                       
+                               a) select SMSC_center_number,sms_type,creation_date,destination,event_date,last_seen,msisdn,record_type,response_code from smsc_records where event_date > '$sep' - interval 1 hour and event_date <= '$sep';
+                               
+                               *** Replace '$sep' with the date and time of the zero size file in the format "2023-11-28 09:00:00" ****
+                               
+4) If there are records in database but is generated empty csv file 
+.....................................
+For raw voice and sms:
+
+5) If there are no record in database the ssh into 172.21.8.17 server and check whether any files are processed in that period in "/opt/msc-cdr/processed_cdrs" directory for raw voice and sms 
+6) If there are records in that period then check if the service is running or not using "ps -aux| grep ofcs" for raw sms and voice. if not running, start the service.
+7) If the service is in stopped state for any reason you can see all the accumulated records sent by lyca in "/opt/msc-cdr/voice_cdrs_lyca"
+
+For smsc:
+
+8) If there are no record in database the ssh into 172.21.8.17 server and check whether any files are processed in that period in "/opt/smsc-cdr/processed_cdrs" directory for raw smsc
+9) If there are records in that period then check if the service is running or not using "ps -aux| grep smsc" for smsc. if not running, start the service
+10) If the service is in stopped state for any reason you can see all the accumulated records sent by lyca in "/opt/smsc-cdr/cdr-log"
+ 
+
+FOR RAW DATA :
+
+11) If there are no record in database the ssh into 172.21.8.18 and 172.21.8.22 server and check whether any files are processed in that period in "/opt/pgw-cdr/files/processed_cdrs" directory for raw data
+12) If there are records in that period then check if the service is running or not using "ps -aux| grep ofcs" for raw data. if not running, start the service
+13) If the service is in stopped state for any reason you can see all the accumulated records sent by lyca in "/opt/pgw-cdr/files/lyca_data_cdr_dump"
+
+
+
+
+

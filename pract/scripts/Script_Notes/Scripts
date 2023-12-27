@@ -1,0 +1,193 @@
+
+>>CSV FILE TO DATABASE
+
+#!/bin/bash
+
+# MySQL credentials
+MYSQL_USER="your_username"
+MYSQL_PASSWORD="your_password"
+MYSQL_DATABASE="your_database"
+
+# CSV file details
+CSV_FILE="data.csv"
+CSV_DELIMITER=","
+
+# MySQL table details
+MYSQL_TABLE="your_table"
+
+# Import data from CSV to MySQL
+mysql -u $MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DATABASE <<EOF
+LOAD DATA INFILE '$CSV_FILE'
+INTO TABLE $MYSQL_TABLE
+FIELDS TERMINATED BY '$CSV_DELIMITER'
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES;
+EOF
+
+echo "Data imported from CSV to MySQL table successfully."
+
+
+=============================================================================================================================================
+>>SCRIPT TO PRINT EVERY 5 SEC DATA
+
+DB_USER="your_username"
+DB_PASS="your_password"
+DB_NAME="your_database"
+TABLE_NAME="your_table"
+
+# CSV File Details
+CSV_FILE="data.csv"
+
+# Import data from MySQL table to CSV file
+mysql -h "$DB_HOST" -u "$DB_USER" -p"$DB_PASS" -D "$DB_NAME" -e "SELECT * INTO OUTFILE '$CSV_FILE' FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\n' FROM $TABLE_NAME"
+
+# Loop to print data from CSV file every 5 seconds
+while true; do
+    clear  # Clear the terminal window
+    echo "Data from CSV file:"
+    echo "-------------------"
+    cat "$CSV_FILE"
+    sleep 5
+done
+
+================================================================================================================================================
+>>DATABASE TO FILE
+
+#!/bin/bash
+read -p"enter file name: " file
+touch $file
+file_name=$file
+current_time=$(date "+%d_%m_%Y_%H_%M_%S")
+new_file=$file_name"_"$current_time.txt
+rm $file_name
+
+sudo mysqldump -uroot -pckompare hari > /home/aryagami/hari/$new_file 
+echo 'so everything is done'
+
+==============================================================================================================================================
+>>FILE TO DATABASE
+
+#!/bin/bash
+read -p"enter file name: " file
+touch $file
+file_name=$file
+current_time=hhybn$(date "+%d_%m_%Y_%H_%M_%S")
+new_file=$file_name"_"$current_time.txt
+cp $file_name $new_file
+rm $file_name
+
+echo "use hari;" >> $new_file
+echo "create table em(sno int,name varchar(10));" >> $new_file
+sudo mysql -uroot -pckompare  < /home/aryagami/hari/$new_file
+
+
+=================================================================================================================================================
+>>CSV FILE TO DATABASE
+
+#!/bin/bash
+file=${1}
+IFS=$'\n'
+((c=-1))
+for line in $(cat ${file})
+do
+        IFS=','
+        ((c++))
+        if ((c==0))
+        then
+                continue
+        fi
+        read sno name gender role sal <<<${line}
+        sudo mysql -uroot -pckompare hari -e " insert into filetodatabase values($sno,'$name','$gender','$role',$sal);"
+done
+
+
+=========================================================================================================================================================
+>> DATABASE To CSV FILe
+
+!/bin/bash
+#CSV_FILE="$HOME/hari/data.csv"
+#sudo mysql -uroot -pckompare -D hari -e "SELECT * FROM em" > "$CSV_FILE"
+
+read -p"enter file name: " file
+
+CSV_FILE="$HOME/hari/$file$(date +'%F %T').csv"
+sudo mysql -uroot -pckompare -D hari -e "SELECT * FROM em" | sed 's/\t/,/g' > "$CSV_FILE"
+
+
+
+
+						16-6-23
+===========================================================================================================================================
+write shell script create one table with different columns like sno,name,current_date-time now for every 1 sec insert values into table after every 3 sec import table data into csv file and print the data inside csv file  
+
+#!/bin/bash
+read -p"enter csv file name: " file
+csv_file="$HOME/hari/$file$(date +'%F %T').csv"
+sudo mysql -uroot -pckompare hari <<EOF
+CREATE TABLE mytable (
+  sno INTEGER,
+  name TEXT,
+  current_date_time TEXT
+);
+EOF
+
+insertvalues() {
+  current_date_time=$(date +"%Y-%m-%d %H:%M:%S")
+  sudo mysql -uroot -pckompare hari -e  "INSERT INTO mytable (sno, name, current_date_time) VALUES ($1, 'Name$1', '$current_date_time');"
+}
+
+exporttocsv() {
+  sudo mysql -uroot -pckompare hari -e "SELECT * FROM mytable;" > "$csv_file"
+  echo "CSV file created: $csv_file"
+  cat "$csv_file"
+}
+for ((i=1; i<=10; i++)); do
+  insertvalues $i
+  sleep 1
+
+  if ((i % 3 == 0)); then
+    exporttocsv
+    sleep 3
+  fi
+done
+exporttocsv
+
+==============================================================================================================================================
+write shell script to insert data into table up to certain time and print the data which is inserted at certain timeperiod
+
+>>>>1
+#!/bin/bash
+read -p"enter csv file: " file
+csv_file="$HOME/hari/$file$(date +%Y-%m-%d\ %H:%M:%S).csv"
+database="hari"
+table="fetchingatcertaintime"
+end_time="2023-05-16 16:15:00"
+start_time="2023-05-16 16:14:00"
+
+create_table() {
+    local query="CREATE TABLE IF NOT EXISTS $table (sno INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(50), current_date_time DATETIME);"
+    sudo mysql -uroot -pckompare -D $database -e "$query"
+echo "table created"
+}
+insert_data() {
+echo "inserting"
+    local timestamp=$(date +%Y-%m-%d\ %H:%M:%S)
+    local value="$1"
+    local query="INSERT INTO $table (name, current_date_time) VALUES ('name$value', '$timestamp');"
+    sudo mysql -uroot -pckompare -D $database -e "$query"
+}
+print_data() {
+    local query="SELECT * FROM $table WHERE current_date_time BETWEEN '$start_time' AND '$end_time';"
+    sudo mysql -uroot -pckompare -D $database -e "$query" | sed 's/\t/,/g' > "$csv_file"
+cat "$csv_file" 
+echo "data printed"
+}
+create_table
+n=1
+while [[ "$(date +%Y-%m-%d\ %H:%M:%S)" < "$end_time" ]]; do
+    insert_data "$n"
+    sleep 1  
+n=$((n+1))
+done
+print_data

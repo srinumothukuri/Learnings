@@ -1,0 +1,31 @@
+{
+   "check_events" : {
+      "input_params" : ["event_desc","start_date", "end_date"],
+      "state_queries" : [
+           { 
+             "state_name" : "events", 
+             "repo_name" : "billingrepo",
+             "db_name" : "billing",
+             "query" : "select * from events where user_name =%(event_desc)s and date > CURDATE()",
+             "out_params": [],
+             "out_params_multi": []
+           }
+      ]
+   },
+
+   "check_errors" : {
+      "input_params" : ["error_desc","start_date", "end_date"],
+      "state_queries" : [
+           {
+             "state_name" : "events",
+             "repo_name" : "billingrepo",
+             "db_name" : "billing",
+             "query" : "select * from error_log where error_desc like %(error_desc)s and date between %(start_date)s and %(end_date)s",
+             "out_params": [],
+             "out_params_multi": []
+           }
+      ]
+   }
+
+
+}

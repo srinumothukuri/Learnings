@@ -1,0 +1,313 @@
+
+
+INSTRUCTIONS
+
+
+.dockerignore
+
+FROM  		Sets the Base Image for subsequent instructions.
+MAINTAINER 	(deprecated - use LABEL instead) Set the Author field of the generated images.
+RUN 		execute any commands in a new layer on top of the current image and commit the results.
+CMD 		provide defaults for an executing container.
+EXPOSE 	informs Docker that the container listens on the specified network ports at runtime. NOTE: does not actually make ports accessible.
+ENV 		sets environment variable.
+ADD 		copies new files, directories or remote file to container. Invalidates caches. Avoid ADD and use COPY instead.
+COPY 		copies new files or directories to container. By default this copies as root regardless of the USER/WORKDIR settings. Use --chown=<user>:<group> to give ownership to another user/group. 			(Same for ADD.)
+ENTRYPOINT 	configures a container that will run as an executable.
+VOLUME 	creates a mount point for externally mounted volumes or other containers.
+USER 		sets the user name for following RUN / CMD / ENTRYPOINT commands.
+WORKDIR 	sets the working directory.
+ARG 		defines a build-time variable.
+ONBUILD 	adds a trigger instruction when the image is used as the base for another build.
+STOPSIGNAL 	sets the system call signal that will be sent to the container to exit.
+LABEL 		apply key/value metadata to your images, containers, or daemons.
+SHELL 		override default shell is used by docker to run commands.
+HEALTHCHECK 	tells docker how to test a container to check that it is still working.
+
+=======================================================================================================================================================================================================
+
+BASIC
+
+: docker version
+: docker -v
+: docker info
+: docker --help
+: docker login
+————————————
+IMAGES
+
+: docker images
+: docker pull
+: docker rmi
+————————————
+CONTAINERS
+
+: docker ps
+: docker run
+: docker start
+: docker stop
+————————————
+SYSTEM
+
+: docker stats
+: docker system df
+: docker system prune
+
+=======================================================================================================================================================================================================
+
+WHAT ARE IMAGES ?
+
+	Docker Images are templates used to create Docker containers
+	Container is a running instance of image
+
+WHERE ARE IMAGES STORED ?
+
+	Registries (e.g. docker hub)
+	Can be stored locally or remote
+
+: docker images --help
+: docker pull image 
+: docker images
+: docker images -q
+: docker images -f “dangling=false”
+: docker images -f “dangling=false” -q
+
+: docker run image
+: docker rmi image
+: docker rmi -f image
+
+: docker inspect
+: docker history imageName
+
+
+TO CREATE CUSTOM IMAGES
+
+Step 1: Create a folder and create a file name with "Dockerfile" (No extension required)
+
+Step 2: Now add instructions and save it
+
+Step 3: In terminal, go to location where docker file is created  and run
+	
+		" docker build -t Name:tag . " ------> To build image
+		" docker run ImageID" ---------> Creates container of image
+
+
+=======================================================================================================================================================================================================
+
+WHAT ARE CONTAINERS ?
+
+	Containers are running instances of Docker Images
+
+COMMANDS
+
+: docker ps
+: docker run ImageName
+: docker start ContainerName/ID
+: docker stop ContainerName/ID
+
+: docker pause ContainerName/ID
+: docker unpause  ContainerName/ID
+
+: docker top ContainerName/ID
+: docker stats ContainerName/ID
+
+: docker attach ContainerName/ID
+
+: docker kill ContainerName/ID
+: docker rm ContainerName/ID
+
+: docker history ImageName/ID
+: docker logs -f <container_name>
+
+=======================================================================================================================================================================================================
+
+DOCKER COMPOSE
+ 
+: tool for defining & running multi-container docker applications
+: use yaml files to configure application services (docker-compose.yml)
+: can start all services with a single command : docker compose up
+: can stop all services with a single command : docker compose down
+: can scale up selected services when required
+
+Step 1 : install docker compose
+   (already installed on windows and mac with docker)
+   docker-compose -v
+   
+   2 Ways
+
+   1.  https://github.com/docker/compose/rel...
+
+   2. Using PIP
+    pip install -U docker-compose
+
+Step 2 : Create docker compose file at any location on your system
+   docker-compose.yml
+
+Step 3 : Check the validity of file by command
+    docker-compose config
+
+Step 4 : Run docker-compose.yml file by command
+   docker-compose up -d
+
+Steps 5 : Bring down application by command
+   docker-compose down
+   
+TO SCALE :
+
+docker-compose up -d --scale database=4
+   
+   
+Use if docker-compose doesn't work/permission denied  **  sudo systemctl restart docker.socket docker.service  **
+
+=======================================================================================================================================================================================================
+
+WHAT ARE VOLUMES ?
+
+	Volumes are the preferred mechanism for persisting data generated by and used by Docker containers
+
+: docker volume  //get information
+: docker volume create volname
+: docker volume ls
+: docker volume inspect volname
+: docker volume rm
+: docker volume prune
+
+Instead of deleting containers one by one of docker ps -a , we can use docker container prune.  and for docker ps (running containers) we can use  docker rm $(ps -aq)
+
+USE OF VOLUMES
+
+	Decoupling container from storage
+	Share volume (storage/data) among different containers
+	Attach volume to container
+	On deleting container volume does not delete
+
+COMMANDS
+
+	docker run --name MyJenkins1 -v myvol1:/var/jenkins_home -p 8080:8080 -p 50000:50000 jenkins    
+												// Myjenkins1 and Myjenkins2 are capable of sharing data as ther are in same volume i.e., myvol1 //
+	docker run --name MyJenkins2 -v myvol1:/var/jenkins_home -p 9090:8080 -p 60000:50000 jenkins
+
+	docker run --name MyJenkins3 -v /Users/raghav/Desktop/Jenkins_Home:/var/jenkins_home -p 9191:8080 -p 40000:50000 jenkins  // Saving data in our pc also called as BIND MOUNTS //
+
+
+NOTES
+
+	By default all files created inside a container are stored on a writable container layer
+	The data doesn’t persist when that container is no longer running
+	A container’s writable layer is tightly coupled to the host machine where the container is running. You can’t easily move the data somewhere else.
+	Docker has two options for containers to store files in the host machine
+	so that the files are persisted even after the container stops
+
+VOLUMES  and  BIND MOUNTS
+
+	Volumes are stored in a part of the host filesystem which is managed by Docker
+	Non-Docker processes should not modify this part of the filesystem
+	Bind mounts may be stored anywhere on the host system
+	Non-Docker processes on the Docker host or a Docker container can modify them at any time
+	In Bind Mounts, the file or directory is referenced by its full path on the host machine. 
+
+	Volumes are the best way to persist data in Docker
+	volumes are managed by Docker and are isolated from the core functionality of the host machine
+	A given volume can be mounted into multiple containers simultaneously.
+	When no running container is using a volume, the volume is still available to Docker and is not removed automatically. You can remove unused volumes using docker volume prune.
+	When you mount a volume, it may be named or anonymous. 
+	Anonymous volumes are not given an explicit name when they are first mounted into a container
+	Volumes also support the use of volume drivers, which allow you to store your data on remote hosts or cloud providers, among other possibilities.
+
+=======================================================================================================================================================================================================
+
+SYNTAX FOR DOCKER-COMPOSE FILE
+
+version: "3.9" 		 				      	 # The version of the Docker Compose file format. You can use other versions, but this example uses version 3.9.
+
+services:
+  service_name_1:
+    image: image_name:tag 			 			 # The Docker image to use for this service.
+    container_name: custom_container_name 				 # (Optional) A custom name for the container.
+    ports:
+      - "host_port:container_port"  					 # (Optional) Expose ports from the container to the host machine.
+    environment:
+      - ENV_VARIABLE=value  						 # (Optional) Set environment variables for the container.
+    volumes:
+      - host_path:container_path  					 # (Optional) Mount volumes from the host machine to the container.
+    networks:
+      - custom_network_name  					 	 # (Optional) Connect the container to a custom network.
+
+  service_name_2:
+    # Configuration for the second service.
+
+networks:
+  custom_network_name:
+    # (Optional) Configuration for custom network(s) used by the services.
+
+volumes:
+  volume_name:
+    # (Optional) Configuration for named volumes used by the services.
+    
+    
+
+Here are some explanations for the different sections in the Docker Compose file:
+
+	version: The version of the Docker Compose file format. This specifies the syntax version of the Compose file you are using.
+
+	services: This section defines the different services or containers in your application. Each service represents a different component of your application.
+
+	image: Specifies the Docker image to use for the service. You can use images from Docker Hub or specify your own custom images.
+
+	container_name: (Optional) Allows you to provide a custom name for the container instead of using the default naming convention.
+
+	ports: (Optional) Maps the ports of the container to the host machine. This allows you to access the services from the host machine.
+
+	environment: (Optional) Sets environment variables inside the container.
+
+	volumes: (Optional) Mounts volumes from the host machine to the container, allowing data persistence.
+
+	networks: (Optional) Specifies custom networks that services can be connected to.
+
+	volumes: (Optional) Specifies named volumes that can be used by services to persist data.
+
+=======================================================================================================================================================================================================
+
+TO CREATE A LOCAL REGISTRY :
+
+step 1: docker run -d -p 5000:5000 --restart=always --name registry -v ${pwd}/docker-registry:/var/lib/registry registry:latest
+
+step 2: curl -X GET http://localhost_ip_address:5000/v2/_catalog            // Displays contents in repository //
+
+step 3: docker tag source_image:tag localhost_ip_address:5000/image:tag     // creates new image of source image with different tag //
+										
+step 4: docker push localhost_ip_address:5000/image:tag		       // create /etc/docker/daemon.json and write "insecure-registries":["localhost_ip:5000"] in it  then restart docker using 													systemctl command//
+										** Delete the copied image after pushing **
+step 5: docker pull localhost_ip_address:5000/image:tag			// Pulls copied image from local repository //
+
+step 6: run step 2 again to see the contents of our local repository (it must contain our pushed image)
+
+ To delete images in private registry use ** docker exec -it registry_name sh ** and find the repository path and delete images
+
+=======================================================================================================================================================================================================
+
+
+node{
+    
+    stage("Git pull repo"){
+    
+               git branch: '${BranchName}', credentialsId: 'cicd-primary', url: 'https://github.com/goswyperdev/billing_micro_services'
+
+    }
+    stage("Maven Install"){
+        def mavenTool= tool name:"maven-3.6.0", type: "maven"
+        
+        def mavenPath= "${mavenTool}/bin/mvn"
+        
+        sh "${mavenPath} clean install"
+    } 
+}
+
+
+
+
+
+
+
+
+

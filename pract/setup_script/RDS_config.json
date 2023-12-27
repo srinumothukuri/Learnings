@@ -1,0 +1,30 @@
+{
+
+    "DBName": "dummy",
+    "MasterPassword": "access123",
+    "region": "ap-south-1",
+    "AvailabilityZone": "ap-south-1b",
+    "EFS_NAME": "dummy-efs",
+    "SecurityGroups": [
+        "sg-050cded53edd8f6d5",
+        "sg-03e77f04a4b5c2efe"
+    ],
+    "vpc_id": "vpc-0a95993d4665b8c6d",
+    "SubnetGroupName": "default-vpc-0a95993d4665b8c6d",
+    "clustersharedgroup_id":"sg-050cded53edd8f6d5",
+    "namespace": "dummy",
+    "mysql_username": "billing",
+    "mysql_password": "access",
+    "databases": [
+         "billing",
+         "ejabberd",
+         "mnodb",
+         "ofcs3G",
+         "roamabilitydb",
+         "shipping",
+         "spal",
+         "ura",
+         "sys",
+         "ussd"
+  ]
+}

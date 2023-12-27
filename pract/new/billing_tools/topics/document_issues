@@ -1,0 +1,48 @@
+{
+    "visa_update_failed" : {
+      "input_params" : ["user_name"],
+      "state_queries" : [
+           { 
+             "state_name" : "visa_info", 
+             "repo_name" : "billingrepo",
+             "db_name" : "billing",
+             "query" : "select u.temp_visa_validity as NewVisaRequestDate,u.visa_expires_on as CurrentVisaValidity,ud.submit_date as VisaDocumentSubmittedDate from user u inner join user_doc ud on u.user_id=ud.user_id and u.user_name=%(user_name)s and ud.doc_type='visa' order by submit_date desc limit 1",
+             "out_params": [],
+             "out_params_multi": []
+           }
+      ]
+   },
+   "visa_update_reseller_permissions" : {
+      "input_params" : ["reseller_name"],
+      "state_queries" : [
+           { 
+             "state_name" : "reseller_visa_permissions", 
+             "repo_name" : "billingrepo",
+             "db_name" : "billing",
+             "query" : "select reseller_name,IF(pending_doc_upload_allowed=NULL or not pending_doc_upload_allowed,'Not allowed','allowed') as PendingDocumentsUploadPermissions,IF(finger_print_upload_allowed=NULL or not finger_print_upload_allowed,'Not allowed','allowed') as FingerPrintDocumentUploadPermissions,IF(update_visa_validity=NULL or not update_visa_validity,'Not allowed','allowed') as VisaUpdatePermissions from reseller_management where reseller_name=%(reseller_name)s",
+             "out_params": [],
+             "out_params_multi": []
+           }
+      ]
+   },
+   "Check_missing_documents" : {
+      "input_params" : ["user_name"],
+      "state_queries" : [
+           { 
+             "state_name" : "user_table", 
+             "repo_name" : "billingrepo",
+             "db_name" : "billing",
+             "query" : "select * from user where user_name = %(user_name)s",
+             "out_params": ["user_id"],
+             "out_params_multi": []
+           },{ 
+             "state_name" : "user_document_table", 
+             "repo_name" : "billingrepo",
+             "db_name" : "billing",
+             "query" : "select * from user_doc where user_id = %(user_id)s",
+             "out_params": [],
+             "out_params_multi": []
+           }
+      ]
+   }
+}

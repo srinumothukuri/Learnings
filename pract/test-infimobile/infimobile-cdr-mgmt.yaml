@@ -1,0 +1,55 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cdrmgmt-server
+  namespace: test-infimobile
+spec:
+  type: NodePort
+  selector:
+    app: cdrmgmt
+  ports:
+    - port: 8989
+      protocol: TCP
+      targetPort: 8989
+      nodePort: 32112
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cdr-deployment
+  namespace: test-infimobile
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 1
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cdrmgmt
+  template:
+    metadata:
+      labels:
+        app: cdrmgmt
+    spec:
+      containers:
+        - name: cdrmgmt-container
+          image: dockerregistry.infimobile.com:5000/cdr_mgmt:latest
+          imagePullPolicy: Always
+          resources:
+            requests:
+                    cpu: "500m"
+            limits:
+                    memory: "1512Mi"
+                    cpu: "2000m"
+          ports:
+          - containerPort: 8989
+          volumeMounts:
+                  - name: prr-files
+                    mountPath: /opt/prr
+      volumes:
+              - name: prr-files
+                nfs:
+                        server: 172.21.16.42
+                        path: /mnt/prr

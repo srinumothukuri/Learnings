@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: stage-document-pv
+spec:
+  capacity:
+    storage: 50Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nfs-stage-document
+  mountOptions:
+    - vers=4.1
+  nfs:
+    path: /mnt/central_documents
+    server: 172.21.16.42
+

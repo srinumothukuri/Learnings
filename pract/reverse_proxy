@@ -1,0 +1,45 @@
+Install and Configure nginx:
+
+Install nginx if it's not already installed on your system. Then, create a new server block configuration for your registry domain. Open an nginx configuration file (usually found in /etc/nginx/conf.d/) and create a configuration like this:
+
+nginx
+Copy code
+
+server {
+    listen 80;
+    server_name myregistry.local;  # Your domain name for the local registry
+    
+    location / {
+        proxy_pass http://localhost:5000;  # Change to your registry's URL
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+
+Replace myregistry.local with the domain name you want to use for your local registry, and adjust the proxy_pass value to point to your registry's URL.
+
+Restart nginx:
+
+After creating or modifying the nginx configuration, restart the nginx service to apply the changes:
+
+bash
+Copy code
+sudo systemctl restart nginx
+Update DNS Resolution:
+
+To ensure that your chosen domain name (myregistry.local in this example) is resolved to the correct IP address, you can add an entry to your local DNS resolver or modify the hosts file on your computer or in your network's DNS server.
+
+For local development purposes, you can add an entry to your computer's hosts file (/etc/hosts on Unix-like systems or C:\Windows\System32\drivers\etc\hosts on Windows):
+
+plaintext
+Copy code
+
+127.0.0.1   myregistry.local
+
+Access the Registry:
+
+With the nginx reverse proxy in place and DNS configured, you can now access your local registry using the domain name myregistry.local. This setup will route requests to the local registry on port 5000 through the nginx proxy, allowing you to access the registry using the domain name instead of an IP address.
+
+Remember that this method is effective for local development and testing. If you plan to use a similar setup in production, consider using a more robust and secure solution, and ensure proper DNS resolution and SSL configuration.

@@ -1,0 +1,6 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: config-efs
+provisioner: k8s-sigs.io/nfs-subdir-external-provisioner
+

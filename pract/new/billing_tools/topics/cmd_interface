@@ -1,0 +1,19 @@
+{
+   "PCRF":{
+      "input_params":["filter"],
+      "state_queries":[
+         {
+            "input_params":"Yes",
+            "userName":"ubuntu",
+            "server_name":"172.31.8.35",
+            "command":"pcrf_lmdb -l | grep"
+         },
+         {
+            "input_params":"No",
+            "userName":"ubuntu",
+            "server_name":"172.31.8.35",
+            "command":"uptime"
+         }
+      ]
+   }
+}

@@ -1,0 +1,65 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: wallet-mgmt
+  namespace: billing-demo
+spec:
+  type: NodePort
+  selector:
+    app: wallet-mgmt
+  ports:
+    - port: 8087
+      protocol: TCP
+      targetPort: 8087
+      nodePort: 32107 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wallet-mgmt-pod-depolyment
+  namespace: billing-demo
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 1
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wallet-mgmt
+  template:
+    metadata:
+      labels:
+        app: wallet-mgmt
+    spec:
+      volumes:
+              - name: efs-pvc
+                persistentVolumeClaim:
+                        claimName: efs-claim-1
+      containers:
+        - name: wallet-mgmt-container
+          image:  hariprasadreddypitta/docker-repository:wallet_mgmt
+#          command: ["/bin/sh"]
+#          args: ["-c", "while true; do echo hello; sleep 10;done"]
+          env:
+            - name: MYSQL_HOST
+              value: mysql-service
+            - name: MYSQL_PORT
+              value: "3306"
+            - name: MYSQL_USER
+              value: root
+            - name: MYSQL_PASSWORD
+              value: access
+            - name: TZ
+              value: America/New_York
+          resources:
+            limits:
+                    memory: "2048Mi"
+                    cpu: "2000m"
+          ports:
+                  - containerPort: 8087
+          volumeMounts:
+                  - name: efs-pvc
+                    mountPath: "/opt/documents_root"
+

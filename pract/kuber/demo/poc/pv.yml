@@ -1,0 +1,19 @@
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pvvvv
+spec:
+  capacity:
+    storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: efs
+  mountOptions:
+    - tls
+  nfs:
+    path: /  # This will be the root of your EFS file system
+    server: fs-06f4bc3d775766d72.efs.ap-south-1.amazonaws.com
+

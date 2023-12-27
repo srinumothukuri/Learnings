@@ -1,0 +1,15 @@
+{
+	"check_ussd_code":   {
+     "input_params" : ["ussd_code", "servedMSISDN"],
+     "state_queries" : [
+           { 
+             "state_name" : "verification_status", 
+             "repo_name" : "billingrepo",
+             "db_name" : "ussd",
+             "query" : "",
+             "out_params": [],
+             "out_params_multi": [],
+             "server_name" : ["ussd"]
+           }
+      ]}
+}

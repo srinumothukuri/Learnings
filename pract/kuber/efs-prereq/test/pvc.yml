@@ -1,0 +1,12 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: billing-demo
+  name: efs-claim-1
+spec:
+  storageClassName: efs
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi

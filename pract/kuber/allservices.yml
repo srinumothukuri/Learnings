@@ -1,0 +1,292 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: billingrepo
+  namespace: billing-demo
+spec:
+  selector: 
+    app: mysql
+  ports:
+  - port: 3306
+    name: mysqlbillingrepo
+    targetPort: 3306
+ 
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: userkycrepo
+  namespace: billing-demo
+spec:
+  selector: 
+    app: mysql
+  ports:
+  - port: 3306
+    targetPort: 3306
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: usermgmtrepo
+  namespace: billing-demo
+spec:
+  selector: 
+    app: mysql
+  ports:
+  - port: 3306
+    targetPort: 3306
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: cataloguemgmtrepo
+  namespace: billing-demo
+spec:
+  selector: 
+    app: mysql
+  ports:
+  - port: 3306
+    targetPort: 3306
+
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: inventorymgmtrepo
+  namespace: billing-demo
+spec:
+  selector: 
+    app: mysql
+  ports:
+  - port: 3306
+    targetPort: 3306
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: walletmgmtrepo
+  namespace: billing-demo
+spec:
+  selector: 
+    app: mysql
+  ports:
+  - port: 3306
+    targetPort: 3306
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: servicemgmtrepo
+  namespace: billing-demo
+spec:
+  selector: 
+    app: mysql
+  ports:
+  - port: 3306
+    targetPort: 3306
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: sspaymentrepo
+  namespace: billing-demo
+spec:
+  selector: 
+    app: mysql
+  ports:
+  - port: 3306
+    targetPort: 3306
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: mnoplanrepo
+  namespace: billing-demo
+spec:
+  selector: 
+    app: mysql
+  ports:
+  - port: 3306
+    targetPort: 3306
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: shipmentmanagementrepo
+  namespace: billing-demo
+spec:
+  selector: 
+    app: mysql
+  ports:
+  - port: 3306
+    targetPort: 3306
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: ejabberdrepo
+  namespace: billing-demo
+spec:
+  selector: 
+    app: mysql
+  ports:
+  - port: 3306
+    targetPort: 3306
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: taxmgmtrepo
+  namespace: billing-demo
+spec:
+  selector: 
+    app: mysql
+  ports:
+  - port: 3306
+    targetPort: 3306
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: verizonnetworkcvgrepo
+  namespace: billing-demo
+spec:
+  selector: 
+    app: mysql
+  ports:
+  - port: 3306
+    targetPort: 3306
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: verizonrepo
+  namespace: billing-demo
+spec:
+  selector: 
+    app: mysql
+  ports:
+  - port: 3306
+    targetPort: 3306
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: urarepo
+  namespace: billing-demo
+spec:
+  selector: 
+    app: mysql
+  ports:
+  - port: 3306
+    targetPort: 3306
+
+---    
+kind: Service
+apiVersion: v1
+metadata:
+  name: offlinerepo
+  namespace: billing-demo
+spec:
+  selector: 
+    app: mysql
+  ports:
+  - port: 3306
+    targetPort: 3306
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: mnorepo
+  namespace: billing-demo
+spec:
+  selector: 
+    app: mysql
+  ports:
+  - port: 3306
+    targetPort: 3306
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: mno-gw-interface
+  namespace: billing-demo
+spec:
+  selector: 
+    app: mysql
+  ports:
+  - port: 8802
+    targetPort: 8802
+
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: taxmgmtrepo
+  namespace: billing-demo
+spec:
+  selector: 
+    app: mysql
+  ports:
+  - port: 3306
+    targetPort: 3306
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: prrfilesrepo
+  namespace: billing-demo
+spec:
+  selector: 
+    app: mysql
+  ports:
+  - port: 3306
+    targetPort: 3306
+
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: roamabilityrepo
+  namespace: billing-demo
+spec:
+  selector: 
+    app: mysql
+  ports:
+  - port: 3306
+    targetPort: 3306
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: cdrmongodbrepo
+  namespace: billing-demo
+spec:
+  selector: 
+    app: mysql
+  ports:
+  - port: 27017
+    targetPort: 27017
+
+
+#This is a test

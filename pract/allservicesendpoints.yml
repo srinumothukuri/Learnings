@@ -1,0 +1,479 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: billingrepo
+  namespace: test-infimobile
+spec:
+  ports:
+  - port: 3306
+    name: mysqlbillingrepo
+    targetPort: 3306
+
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: billingrepo
+  namespace: test-infimobile
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+        name: mysqlbillingrepo
+ 
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: userkycrepo
+  namespace: test-infimobile
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: userkycrepo
+  namespace: test-infimobile
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: usermgmtrepo
+  namespace: test-infimobile
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: usermgmtrepo
+  namespace: test-infimobile
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: cataloguemgmtrepo
+  namespace: test-infimobile
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: cataloguemgmtrepo
+  namespace: test-infimobile
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: inventorymgmtrepo
+  namespace: test-infimobile
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: inventorymgmtrepo
+  namespace: test-infimobile
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: walletmgmtrepo
+  namespace: test-infimobile
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: walletmgmtrepo
+  namespace: test-infimobile
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: servicemgmtrepo
+  namespace: test-infimobile
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: servicemgmtrepo
+  namespace: test-infimobile
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: sspaymentrepo
+  namespace: test-infimobile
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: sspaymentrepo
+  namespace: test-infimobile
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: mnoplanrepo
+  namespace: test-infimobile
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: mnoplanrepo
+  namespace: test-infimobile
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: shipmentmanagementrepo
+  namespace: test-infimobile
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: shipmentmanagementrepo
+  namespace: test-infimobile
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: ejabberdrepo
+  namespace: test-infimobile
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: ejabberdrepo
+  namespace: test-infimobile
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: taxmgmtrepo
+  namespace: test-infimobile
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: taxmgmtrepo
+  namespace: test-infimobile
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: verizonnetworkcvgrepo
+  namespace: test-infimobile
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: verizonnetworkcvgrepo
+  namespace: test-infimobile
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+
+
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: verizonrepo
+  namespace: test-infimobile
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: verizonrepo
+  namespace: test-infimobile
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: urarepo
+  namespace: test-infimobile
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: urarepo
+  namespace: test-infimobile
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+---    
+kind: Service
+apiVersion: v1
+metadata:
+  name: offlinerepo
+  namespace: test-infimobile
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: offlinerepo
+  namespace: test-infimobile
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: mnorepo
+  namespace: test-infimobile
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: mnorepo
+  namespace: test-infimobile
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: mno-gw-interface
+  namespace: test-infimobile
+spec:
+  ports:
+  - port: 8802
+    targetPort: 8802
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: mno-gw-interface
+  namespace: test-infimobile
+subsets:
+  - addresses:
+      - ip: "172.31.23.142"
+    ports:
+      - port: 8082
+
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: taxmgmtrepo
+  namespace: test-infimobile
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: taxmgmtrepo
+  namespace: test-infimobile
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: prrfilesrepo
+  namespace: test-infimobile
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: prrfilesrepo
+  namespace: test-infimobile
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: roamabilityrepo
+  namespace: test-infimobile
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: roamabilityrepo
+  namespace: test-infimobile
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 3306
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: cdrmongodbrepo
+  namespace: test-infimobile
+spec:
+  ports:
+  - port: 27017
+    targetPort: 27017
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: cdrmongodbrepo
+  namespace: test-infimobile
+subsets:
+  - addresses:
+      - ip: "172.21.16.42"
+    ports:
+      - port: 27017
+
+
+

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: config-provisioner
+  namespace: billing-demo
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: config-provisioner
+  template:
+    metadata:
+      labels:
+        app: config-provisioner
+    spec:
+      serviceAccountName: config-provisioner
+      containers:
+      - name: config-provisioner
+        image: quay.io/external_storage/nfs-client-provisioner:latest
+        volumeMounts:
+        - name: config-files
+          mountPath: /persistentvolumes
+        env:
+        - name: PROVISIONER_NAME
+          value: k8s-sigs.io/nfs-subdir-external-provisioner
+        - name: NFS_SERVER
+          value: 172.28.28.143
+        - name: NFS_PATH
+          value: /mnt/config_properties
+      volumes:
+      - name: config-files
+        nfs:
+          server: 172.28.28.143
+          path: /mnt/config_properties

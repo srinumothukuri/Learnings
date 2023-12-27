@@ -1,0 +1,102 @@
+{
+   "Notifications" : {
+      "issue_types" : {
+           "Email Not Reviced" : {
+             "input_params" : ["served_msisdn","Email","lines_before","lines_after"], 
+             "log_searches" : [{
+               "module":"integration",
+               "server_name" : ["integration"], 
+               "file_path" : "/var/log/integration.log",
+               "filter_strigs" : ["handleTopicMessage EXT Email","EVENTEmailEvent"]
+             },
+             {
+               "module":"spal", 
+               "server_name" : ["reseller"], 
+               "file_path" : "/var/log/integration.log",
+               "filter_strigs" : ["handleTopicMessage EXT Email","EVENTEmailEvent"]
+             }]
+           },
+           "SMS Not Reviced" : {
+             "input_params" : ["served_msisdn","lines_before","lines_after"], 
+             "log_searches" : [{
+               "module":"integration",
+               "server_name" : ["integration"], 
+               "file_path" : "/var/log/integration.log",
+               "filter_strigs" : ["URL","response for sending message","EVENTEmailEvent"]
+             },
+             {
+               "module":"controller", 
+               "server_name" : ["ui-controller","ui-controller-1"], 
+               "file_path" : "/opt/apache-tomcat-8.5.35/logs/catalina.out",
+               "filter_strigs" : ["Publishing new message","Publishing prepaid subscription event"]
+             }]
+           }
+        }
+    },
+     "Recharges" : {
+      "issue_types" : {
+           "Email Not Reviced" : {
+             "input_params" : ["served_msisdn", "email_address","lines_before","lines_after"], 
+             "log_searches" : [{
+               "module":"integration",
+               "server_name" : ["integration"], 
+               "file_path" : "/var/log/integration.log",
+               "filter_strigs" : ["handleTopicMessage EXT Email","EVENTEmailEvent"]
+             },
+             {
+               "module":"spal", 
+               "server_name" : ["reseller"], 
+               "file_path" : "/var/log/integration.log",
+               "filter_strigs" : ["handleTopicMessage EXT Email","EVENTEmailEvent"]
+             }]
+           },
+           "SMS Not Reviced" : {
+             "input_params" : ["served_msisdn", "email_address"], 
+             "log_searches" : [{
+               "module":"integration",
+               "server_name" : ["integration"], 
+               "file_path" : "/var/log/integration.log",
+               "filter_strigs" : ["handleTopicMessage EXT Email","EVENTEmailEvent"]
+             },
+             {
+               "module":"spal", 
+               "server_name" : ["reseller"], 
+               "file_path" : "/var/log/integration.log",
+               "filter_strigs" : ["handleTopicMessage EXT Email","EVENTEmailEvent"]
+             }]
+           }
+        }
+    },
+    "Registration" : {
+      "issue_types" : {
+           "NIRA not working" : {
+             "input_params" : ["Identity Number",0,3], 
+             "log_searches" : [{
+               "module":"controller",
+               "server_name" : ["ui-controller","ui-controller-1"], 
+               "file_path" : "/opt/apache-tomcat-8.5.35/logs/catalina.out",
+               "filter_strigs" : ["Identity Number"],
+               "sub_filters" : []
+             }]
+           },
+           "Subscription not activating" : {
+             "input_params" : ["served_msisdn","lines_before","lines_after"], 
+             "log_searches" : [{
+               "module":"controller",
+               "server_name" : ["ui-controller","ui-controller-1"], 
+               "file_path" : "/opt/apache-tomcat-8.5.35/logs/catalina.out",
+               "filter_strigs" : ["addUser"]
+               }]
+             },
+             "Documents not uploading" : {
+             "input_params" : ["served_msisdn","lines_before","lines_after"], 
+             "log_searches" : [{
+               "module":"controller",
+               "server_name" : ["ui-controller","ui-controller-1"], 
+               "file_path" : "/opt/apache-tomcat-8.5.35/logs/catalina.out",
+               "filter_strigs" : ["addUser"]
+             }]
+           }
+        }
+    }
+}

@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: fetch-document
+  namespace: test-infimobile
+spec:
+  type: NodePort
+  selector:
+    app: fetch-document
+  ports:
+    - port: 8443
+      protocol: TCP
+      targetPort: 8443
+      nodePort: 32104
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fetch-document-pod-depolyment
+  namespace: test-infimobile
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 1
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fetch-document
+  template:
+    metadata:
+      labels:
+        app: fetch-document
+    spec:
+      volumes:
+              - name: documents
+                persistentVolumeClaim:
+                        claimName: nfs-pvc-document
+      containers:
+        - name: fetch-document-container
+          image:  dockerregistry.infimobile.com:5000/fetch_document:latest
+          resources:
+            limits:
+                    memory: "2048Mi"
+                    cpu: "2000m"
+          ports:
+                  - containerPort: 8443
+          volumeMounts:
+                  - name: documents
+                    mountPath: /usr/local/tomcat/webapps/ROOT/fetch_documents
+

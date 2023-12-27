@@ -1,0 +1,12 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: dummy
+  name: pvccc
+spec:
+  storageClassName: dummyefs
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 30Gi

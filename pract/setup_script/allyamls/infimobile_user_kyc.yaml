@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-kyc
+  namespace: dummy
+spec:
+  type: NodePort
+  selector:
+    app: user-kyc
+  ports:
+    - port: 8089
+      protocol: TCP
+      targetPort: 8089
+      nodePort: 32119 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-kyc-pod-depolyment
+  namespace: dummy
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 1
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-kyc
+  template:
+    metadata:
+      labels:
+        app: user-kyc
+    spec:
+      volumes:
+        - name: efs-pvc
+          persistentVolumeClaim:
+            claimName: pvccc
+      containers:
+        - name: user-kyc-container
+          image: infimobile/docker:user_kyc
+          env:
+            - name: TZ
+              value: America/New_York
+          resources:
+            limits:
+              memory: "2048Mi"
+              cpu: "2000m"
+          ports:
+            - containerPort: 8089
+          volumeMounts:
+            - name: efs-pvc
+              mountPath: "/opt/documents_root"
+      imagePullSecrets:
+        - name: infimobile-dockerhub-secret        
+

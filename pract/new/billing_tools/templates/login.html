@@ -1,0 +1,30 @@
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aryagami Billing - login page</title>
+    <link rel="icon" type="image/png" href="./static/img/lyca.jpg">
+    <link rel="stylesheet" href="../static/css/styles.css">
+</head>
+<body>
+<div class="container">
+    <form action="" method="post">
+        <img src="./static/img/lyca.jpg" style="width: 80px;height: 50px">
+        <p>Please login</p>
+        <input type="text" placeholder="Username" name="username" value="{{
+          request.form.username }}">
+        <br>
+        <input type="password" placeholder="Password" name="password" value="{{
+          request.form.password }}">
+        <br>
+        <input class="btn btn-default" type="submit" value="Login">
+    </form>
+    <br>
+    {% if error %}
+    <p class="error"><strong>Error:</strong> {{ error }}
+        {% endif %}
+</div>
+
+</body>
+</html>

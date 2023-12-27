@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-config
+  namespace: test-infimobile
+data:
+  billingrepo: mysqlbillingrepo
+  cataloguemgmtrepo: ctlmgmtrepo-svc
+  ejabberdrepo: ejabberdrepo-svc
+  inventorymgmtrepo: inventmgmtrepo-svc
+  mnoplanrepo: mnoplanrepo-svc
+  servicemgmtrepo: servicemgmtrepo-svc
+  shipmentmanagementrepo: shipmgmtrepo-svc
+  sspaymentrepo: sspayrepo-svc
+  taxmgmtrepo: taxmgmtrepo-svc
+  userkycrepo: userkycrepo-svc
+  walletmgmtrepo: walletmgmtrepo-svc
+  mqttbroker: mqttbroker-svc
+  config-hub: configserver-service

@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: foo
+  namespace: test-infimobile
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: foo
+  template:
+    metadata:
+      labels:
+        app: foo
+    spec:
+      containers:
+      - name: foo
+        image: redis
+        resources:
+            requests:
+                    cpu: "500m"
+            limits:
+                    memory: "1512Mi"
+                    cpu: "2000m"
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: ilcdr-files
+          mountPath: /opt/ilcdr
+      volumes:
+      - name: ilcdr-files
+        nfs:
+          server: 172.21.16.42
+          path: /mnt/ilcdr

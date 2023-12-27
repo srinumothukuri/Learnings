@@ -1,0 +1,123 @@
+{
+   "check_ocs" : {
+      "input_params" : ["served_MSISDN"],
+      "state_queries" : [
+           { 
+             "state_name" : "default_rg_subscription", 
+             "repo_name" : "spalapirepo",
+             "db_name" : "spal",
+             "query" : "select subscription_id, subscription.tariff_id, IFNULL(n_octets_total, 0), IFNULL(n_octets_left, 0), IFNULL(n_units_total, 0), IFNULL(n_units_left, 0), IFNULL(subscription.tariff_unit_cost, 0), IFNULL(final_unit_exp, 0), IFNULL(ord(is_unlimited_plan), 0), IFNULL(above_quota_speed, 0), IFNULL(ord(quota_exceed_triggered), 0), IFNULL(ord(lowbalance_notified), 0), IFNULL(ord(expiration_notified), 0), IFNULL(unix_timestamp(validity_date), unix_timestamp(now())), IFNULL(ord(is_fallback_plan), 0), IFNULL(subscription.account_id, ''), fup_action, IFNULL(daily_cap, 0), IFNULL(monthly_cap, 0), IFNULL(daily_left_cap, 0), IFNULL(monthly_left_cap, 0), unix_timestamp(daily_cap_timestamp), IFNULL(tariff.is_off_peak, 0), IFNULL(tariff.off_peak_start_time, 0), IFNULL(tariff.off_peak_end_time, 0), IFNULL(service.fup_usage_quota, 0), IFNULL(fup_quota_used, 0), IFNULL(service.is_postpaid, 0), IFNULL(ord(is_shared_subscription), 0), IFNULL(parent_subscription_id, ''), IFNULL(sharing_quota, 0), IFNULL(n_units_unrated_left, 0) from subscription join user on subscription.user_id=user.user_id join service on subscription.service_id=service.service_id join tariff on subscription.tariff_id=tariff.tariff_id where served_MSISDN=%(served_MSISDN)s and rating_group_id=1 and tariff_is_active=1 and units_type='Octets' and service_context='1982392@data.lte.tangerine.com' and now()>start_date and (now() <=validity_date or is_fallback_plan) and (is_fallback_plan or !tariff.is_off_peak or (tariff.is_off_peak and ((tariff.off_peak_start_time < tariff.off_peak_end_time and (hour(now()) * 100 + minute(now())) > tariff.off_peak_start_time and (hour(now()) * 100 + minute(now())) < tariff.off_peak_end_time) or (tariff.off_peak_start_time > tariff.off_peak_end_time and (hour(now()) * 100 + minute(now())) > tariff.off_peak_start_time or (hour(now()) * 100 + minute(now())) < tariff.off_peak_end_time)))) order by validity_date asc, off_peak_start_time limit 12",
+             "out_params": [],
+             "out_params_multi": []
+           },
+           { 
+             "state_name" : "social_bundle_rg_subscription", 
+             "repo_name" : "spalapirepo",
+             "db_name" : "spal",
+             "query" : "select subscription_id, subscription.tariff_id, IFNULL(n_octets_total, 0), IFNULL(n_octets_left, 0), IFNULL(n_units_total, 0), IFNULL(n_units_left, 0), IFNULL(subscription.tariff_unit_cost, 0), IFNULL(final_unit_exp, 0), IFNULL(ord(is_unlimited_plan), 0), IFNULL(above_quota_speed, 0), IFNULL(ord(quota_exceed_triggered), 0), IFNULL(ord(lowbalance_notified), 0), IFNULL(ord(expiration_notified), 0), IFNULL(unix_timestamp(validity_date), unix_timestamp(now())), IFNULL(ord(is_fallback_plan), 0), IFNULL(subscription.account_id, ''), fup_action, IFNULL(daily_cap, 0), IFNULL(monthly_cap, 0), IFNULL(daily_left_cap, 0), IFNULL(monthly_left_cap, 0), unix_timestamp(daily_cap_timestamp), IFNULL(tariff.is_off_peak, 0), IFNULL(tariff.off_peak_start_time, 0), IFNULL(tariff.off_peak_end_time, 0), IFNULL(service.fup_usage_quota, 0), IFNULL(fup_quota_used, 0), IFNULL(service.is_postpaid, 0), IFNULL(ord(is_shared_subscription), 0), IFNULL(parent_subscription_id, ''), IFNULL(sharing_quota, 0), IFNULL(n_units_unrated_left, 0) from subscription join user on subscription.user_id=user.user_id join service on subscription.service_id=service.service_id join tariff on subscription.tariff_id=tariff.tariff_id where served_MSISDN=%(served_MSISDN)s and rating_group_id=5 and tariff_is_active=1 and units_type='Octets' and service_context='1982392@data.lte.tangerine.com' and now()>start_date and (now() <=validity_date or is_fallback_plan) and (is_fallback_plan or !tariff.is_off_peak or (tariff.is_off_peak and ((tariff.off_peak_start_time < tariff.off_peak_end_time and (hour(now()) * 100 + minute(now())) > tariff.off_peak_start_time and (hour(now()) * 100 + minute(now())) < tariff.off_peak_end_time) or (tariff.off_peak_start_time > tariff.off_peak_end_time and (hour(now()) * 100 + minute(now())) > tariff.off_peak_start_time or (hour(now()) * 100 + minute(now())) < tariff.off_peak_end_time)))) order by validity_date asc, off_peak_start_time limit 12",
+             "out_params": [],
+             "out_params_multi": []
+         },
+         { 
+             "state_name" : "subscription_service_policy", 
+             "repo_name" : "spalapirepo",
+             "db_name" : "spal",
+             "query" : "select * from subscription_service_policy where served_MSISDN=%(served_MSISDN)s order by validity_date desc",
+             "out_params": [],
+             "out_params_multi": []
+         }
+      ]
+   },
+   "check_OTT" : {
+      "input_params" : ["served_MSISDN"],
+      "state_queries" : [
+         {
+             "state_name" : "prepaid_subscription_record",
+             "repo_name" : "billingrepo",
+             "db_name" : "billing",
+             "query" : "select  psr.* from subscription sub join prepaid_subscription_records psr on psr.subscription_id=sub.subscription_id where sub.served_MSISDN=%(served_MSISDN)s and psr.expiry_date > now() and psr.ignore_ott_check=1 and psr.is_active=1",
+             "out_params": [],
+             "out_params_multi": []
+         },
+         {
+             "state_name" : "subscription_policy_gating",
+             "repo_name" : "spalapirepo",
+             "db_name" : "spal",
+             "query" : "select * from subscription_policy_gating where served_MSISDN=%(served_MSISDN)s",
+             "out_params": [],
+             "out_params_multi": []
+         }
+      ]
+   },
+   "check_reseller_vpn" : {
+      "input_params" : ["served_MSISDN"],
+      "state_queries" : [
+         {
+             "state_name" : "billing_subscription",
+             "repo_name" : "billingrepo",
+             "db_name" : "billing",
+             "query" : "select  sub.* from subscription sub where sub.served_MSISDN=%(served_MSISDN)s",
+             "out_params": [],
+             "out_params_multi": []
+         },
+         {
+             "state_name" : "spal_subscription",
+             "repo_name" : "spalapirepo",
+             "db_name" : "spal",
+             "query" : "select * from subscription where served_MSISDN=%(served_MSISDN)s",
+             "out_params": [],
+             "out_params_multi": []
+         },
+         {
+             "state_name" : "subscription_policy_gating",
+             "repo_name" : "spalapirepo",
+             "db_name" : "spal",
+             "query" : "select * from subscription_policy_gating where served_MSISDN=%(served_MSISDN)s",
+             "out_params": [],
+             "out_params_multi": []
+         },
+         {
+             "state_name" : "subscription_service_policy",
+             "repo_name" : "spalapirepo",
+             "db_name" : "spal",
+             "query" : "select * from subscription_service_policy where served_MSISDN=%(served_MSISDN)s",
+             "out_params": [],
+             "out_params_multi": []
+         }
+      ]
+  },
+  "check_rated_CDRS" : {
+      "input_params" : ["served_IMSI", "commit_date_start", "commit_date_end"],
+      "state_queries" : [
+         {
+             "state_name" : "subscription_tariff_reserve_logs",
+             "repo_name" : "billingreposhadow",
+             "db_name" : "spal",
+             "query" : "select session_id, subscription_id, n_units_used, n_units_left, n_units_left-n_units_used, reserve_date, commit_date, request_type from subscription_tariff_reserve_log where served_IMSI=%(served_IMSI)s and commit_date >=%(commit_date_start)s and commit_date <= %(commit_date_end)s order by commit_date asc",
+             "out_params": [],
+             "out_params_multi": []
+         }
+      ]
+  },
+  "check_recharge_rated_CDRS" : {
+      "input_params" : ["subscription_recharge_token"],
+      "state_queries" : [
+         {
+             "state_name" : "subscription_tariff_reserve_log",
+             "repo_name" : "spalapirepo",
+             "db_name" : "spal",
+             "query" : "select session_id, n_units_used, n_units_left, n_units_left-n_units_used, reserve_date, commit_date, request_type from subscription_tariff_reserve_log where subscription_id=%(subscription_recharge_token)s order by commit_date asc",
+             "out_params": [],
+             "out_params_multi": []
+         },
+         {
+             "state_name" : "spal_subscription",
+             "repo_name" : "spalapirepo",
+             "db_name" : "spal",
+             "query" : "select * from subscription where subscription_id=%(subscription_recharge_token)s",
+             "out_params": [],
+             "out_params_multi": []
+         }
+      ]
+  }
+}

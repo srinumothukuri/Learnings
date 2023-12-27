@@ -1,0 +1,115 @@
+{
+	"host_info": [{
+			"name": "Controller-01",
+			"address": "172.31.8.8",
+			"port": "8080",
+			"context": "billing",
+			"uri": "get_service_status"
+		},
+
+		{
+			"name": "Controller-02",
+			"address": "172.31.8.11",
+			"port": "8080",
+			"context": "billing",
+			"uri": "get_service_status"
+		},
+
+		{
+			"name": "Reports-01",
+			"address": "172.31.8.53",
+			"port": "8091",
+			"context": "reports",
+			"uri": "get_service_status"
+		},
+
+		{
+			"name": "Reseller-01",
+			"address": "10.20.15.39",
+			"port": "8080",
+			"context": "reports",
+			"uri": "get_service_status"
+		},
+
+		{
+			"name": "Spal-01",
+			"address": "10.20.15.39",
+			"port": "8083",
+			"context": "",
+			"uri": "get_service_status"
+		},
+
+		{
+			"name": "Spalapi-01",
+			"address": "172.31.8.26",
+			"port": "8085",
+			"context": "spal",
+			"uri": "get_service_status"
+		},
+
+		{
+			"name": "Workflow-01",
+			"address": "172.31.8.24",
+			"port": "8081",
+			"context": "",
+			"uri": "get_service_status"
+		},
+
+		{
+			"name": "Scheduler-01",
+			"address": "10.20.15.39",
+			"port": "8087",
+			"context": "",
+			"uri": "get_service_status"
+		},
+
+		{
+			"name": "Ussd-01",
+			"address": "172.31.8.60",
+			"port": "8007",
+			"context": "",
+			"uri": "get_service_status"
+		},
+
+		{
+			"name": "Ofcsvoices-01",
+			"address": "172.31.8.17",
+			"port": "8086",
+			"context": "",
+			"uri": "get_service_status"
+		},
+
+		{
+			"name": "Camel-01",
+			"address": "172.31.8.3",
+			"port": "9000",
+			"context": "",
+			"uri": "get_service_status"
+		},
+
+		{
+			"name": "Ofcsdata-01",
+			"address": "172.31.8.18",
+			"port": "8088",
+			"context": "",
+			"uri": "get_service_status"
+		},
+
+		{
+			"name": "SMSCdr-01",
+			"address": "reportslive1",
+			"port": "8097",
+			"context": "",
+			"uri": "get_service_status"
+		},
+
+		{
+			"name": "Ura-01",
+			"address": "172.31.8.55",
+			"port": "8067",
+			"context": "ura_interface",
+			"uri": "get_service_status"
+		}
+	]
+
+}
